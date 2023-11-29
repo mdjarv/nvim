@@ -1,7 +1,7 @@
 return {
 	'zbirenbaum/copilot-cmp',
 	events = 'InsertEnter',
-	dependencies = { 'zbirenbaum/copilot.lua' },
+	dependencies = { 'zbirenbaum/copilot.lua', 'ofseed/copilot-status.nvim' },
 	config = function()
 		vim.defer_fn(function()
 			require('copilot').setup({

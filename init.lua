@@ -47,6 +47,9 @@ vim.g.maplocalleader = ' '
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -165,20 +168,6 @@ require('lazy').setup({
     config = function()
       vim.cmd.colorscheme 'catppuccin'
     end
-  },
-
-  {
-    -- Set lualine as statusline
-    'nvim-lualine/lualine.nvim',
-    -- See `:help lualine.txt`
-    opts = {
-      options = {
-        icons_enabled = false,
-        theme = 'catppuccin',
-        component_separators = '|',
-        section_separators = '',
-      },
-    },
   },
 
   {
