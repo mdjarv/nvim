@@ -353,9 +353,12 @@ vim.defer_fn(function()
     ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-    auto_install = false,
+    auto_install = true,
 
-    highlight = { enable = true },
+    highlight = {
+      enable = true,
+      additional_vim_regex_highlighting = false,
+    },
     indent = { enable = true },
     incremental_selection = {
       enable = true,
@@ -478,7 +481,14 @@ local servers = {
   -- rust_analyzer = {},
   tsserver = {},
   html = { filetypes = { 'html', 'twig', 'hbs' } },
-  tailwindcss = {},
+  tailwindcss = {
+    filetypes = { 'templ' },
+    init_options = {
+      userLanguages = {
+        templ = 'html',
+      },
+    },
+  },
   cssls = {},
   jsonls = {},
 
@@ -490,6 +500,8 @@ local servers = {
       -- diagnostics = { disable = { 'missing-fields' } },
     },
   },
+
+  templ = {},
 }
 
 -- Setup neovim lua configuration
