@@ -2,7 +2,6 @@
 require('which-key').register {
 	['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
 	['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
-	['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
 	['<leader>l'] = { name = '[L]SP', _ = 'which_key_ignore' },
 	['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
 	['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
@@ -15,7 +14,7 @@ require('which-key').register {
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
-vim.keymap.set('n', '<leader>c', '<cmd>bdelete<cr>', { desc = 'Close buffer' })
+vim.keymap.set('n', '<leader>c', '<cmd>bd<cr>', { desc = 'Close buffer' })
 vim.keymap.set('n', '<leader>q', '<cmd>q<cr>', { desc = 'Quit' })
 
 -- Remap for dealing with word wrap
