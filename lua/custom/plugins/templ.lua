@@ -1,9 +1,3 @@
--- vim.filetype.add({
--- 	extension = {
--- 		templ = 'templ',
--- 	},
--- })
---
 -- -- Make sure we have a tree-sitter grammar for the language
 -- local treesitter_parser_config = require "nvim-treesitter.parsers".get_parser_configs()
 -- treesitter_parser_config.templ = treesitter_parser_config.templ or {
