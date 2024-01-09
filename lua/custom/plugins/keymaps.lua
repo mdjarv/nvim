@@ -41,4 +41,7 @@ vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move to buffer right' })
 vim.keymap.set('n', '<S-h>', ':BufferLineCyclePrev<cr>', { desc = 'Previous tab' })
 vim.keymap.set('n', '<S-l>', ':BufferLineCycleNext<cr>', { desc = 'Next tab' })
 
+-- Edit vimrc
+vim.keymap.set('n', '<leader>,', ':e $MYVIMRC<cr>', { desc = 'Edit Settings' })
+
 return {}
