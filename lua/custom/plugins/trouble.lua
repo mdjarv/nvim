@@ -4,6 +4,8 @@ return {
 		'nvim-tree/nvim-web-devicons',
 	},
 	config = function()
+		require('trouble').setup({})
+
 		require('which-key').register {
 			['<leader>t'] = { name = '[T]rouble', _ = 'which_key_ignore' },
 		}
