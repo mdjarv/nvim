@@ -1,7 +1,7 @@
 return {
 	'epwalsh/obsidian.nvim',
 	version = '*',
-	lazy = true,
+	lazy = false,
 	ft = 'markdown',
 	dependencies = {
 		'nvim-lua/plenary.nvim',
@@ -34,5 +34,6 @@ return {
 		vim.keymap.set('n', '<leader>oo', '<cmd>ObsidianQuickSwitch<cr>', { desc = 'Quick Switch' })
 		vim.keymap.set('n', '<leader>od', '<cmd>ObsidianToday<cr>', { desc = 'To[d]ay' })
 		vim.keymap.set('n', '<leader>ob', '<cmd>ObsidianBacklinks<cr>', { desc = '[B]acklinks' })
+		vim.keymap.set('n', '<leader>op', '<cmd>ObsidianPasteImg<cr>', { desc = '[P]aste Image' })
 	end,
 }

@@ -1,44 +1,24 @@
--- return {
--- 	'zbirenbaum/copilot-cmp',
--- 	events = 'InsertEnter',
--- 	dependencies = { 'zbirenbaum/copilot.lua', 'ofseed/copilot-status.nvim' },
--- 	config = function()
--- 		vim.defer_fn(function()
--- 			require('copilot').setup({
--- 				panel = {
--- 					enabled = false,
--- 				},
--- 				suggestion = {
--- 					enabled = false,
--- 					-- auto_trigger = false,
--- 					-- keymap = {
--- 					-- 	accept = '<tab>',
--- 					-- },
--- 				},
--- 				filetypes = {
--- 					yaml = true,
--- 					markdown = true,
--- 				},
--- 			})
--- 			require('copilot_cmp').setup()
--- 		end, 100)
--- 	end
--- }
-
 return {
-	'zbirenbaum/copilot.lua',
-	cmd = "Copilot",
-	event = "InsertEnter",
-	build = ":Copilot auth",
-	config = function()
-		local copilot = require('copilot')
-		copilot.setup({
-			suggestion = {
-				enabled = true,
-				auto_trigger = true,
-				debounce = 75,
-			},
-			panel = { enabled = false },
-		})
-	end
+	{
+		'zbirenbaum/copilot.lua',
+		cmd = "Copilot",
+		event = "InsertEnter",
+		build = ":Copilot auth",
+		config = function()
+			local copilot = require('copilot')
+			copilot.setup({
+				suggestion = { enabled = false },
+				panel = { enabled = false },
+				filetypes = { ["*"] = true },
+			})
+		end
+	},
+	{
+		"zbirenbaum/copilot-cmp",
+		dependencies = { 'zbirenbaum/copilot.lua' },
+		config = function()
+			require("copilot_cmp").setup()
+			vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
+		end
+	},
 }
