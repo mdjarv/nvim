@@ -419,7 +419,15 @@ end
 
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
-require('mason').setup()
+require('mason').setup {
+  ui = {
+    icons = {
+      package_installed = '✓',
+      package_pending = '➜',
+      package_uninstalled = '✗',
+    },
+  },
+}
 require('mason-lspconfig').setup()
 
 -- Enable the following language servers
@@ -439,7 +447,7 @@ local servers = {
   html = { filetypes = { 'html', 'twig', 'hbs', 'templ' } },
   htmx = { filetypes = { 'html', 'templ' } },
   tailwindcss = {
-    filetypes = { 'templ', 'javascript', 'typescript', 'react' },
+    filetypes = { 'templ', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' },
     init_options = { userLanguages = { templ = 'html' } },
   },
   cssls = {},
