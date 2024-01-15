@@ -53,7 +53,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim',       opts = {} },
+      -- { 'j-hui/fidget.nvim',       opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -81,7 +81,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',   opts = {} },
+  { 'folke/which-key.nvim', opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -163,7 +163,7 @@ require('lazy').setup({
     priority = 1000,
     config = function()
       vim.cmd.colorscheme 'catppuccin'
-    end
+    end,
   },
 
   {
@@ -254,7 +254,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
-
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
 
@@ -286,9 +285,9 @@ end
 local function live_grep_git_root()
   local git_root = find_git_root()
   if git_root then
-    require('telescope.builtin').live_grep({
+    require('telescope.builtin').live_grep {
       search_dirs = { git_root },
-    })
+    }
   end
 end
 
@@ -456,13 +455,12 @@ local servers = {
   },
 
   templ = {
-    cmd = { "templ", "lsp", "-http=localhost:7474", "-log=/home/mdjarv/templ.log" },
+    cmd = { 'templ', 'lsp', '-http=localhost:7474', '-log=/home/mdjarv/templ.log' },
     filetypes = { 'templ' },
   },
 
   dockerls = {},
   docker_compose_language_service = {},
-
 
   -- biome = {},
 
@@ -502,12 +500,14 @@ local luasnip = require 'luasnip'
 require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
 
-local lspkind = require('lspkind')
+local lspkind = require 'lspkind'
 
 local has_words_before = function()
-  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+  if vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt' then
+    return false
+  end
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match '^%s*$' == nil
 end
 
 cmp.setup {
@@ -538,9 +538,9 @@ cmp.setup {
     --     fallback()
     --   end
     -- end, { 'i', 's' }),
-    ["<Tab>"] = vim.schedule_wrap(function(fallback)
+    ['<Tab>'] = vim.schedule_wrap(function(fallback)
       if cmp.visible() and has_words_before() then
-        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+        cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
       else
         fallback()
       end
@@ -556,14 +556,14 @@ cmp.setup {
     end, { 'i', 's' }),
   },
   sources = {
-    { name = 'copilot',   group_index = 2 },
-    { name = 'nvim_lsp',  group_index = 2 },
-    { name = 'path',      group_index = 2 },
-    { name = 'luasnip',   group_index = 2 },
+    { name = 'copilot', group_index = 2 },
+    { name = 'nvim_lsp', group_index = 2 },
+    { name = 'path', group_index = 2 },
+    { name = 'luasnip', group_index = 2 },
   },
   ---@diagnostic disable-next-line: missing-fields
   formatting = {
-    format = lspkind.cmp_format({
+    format = lspkind.cmp_format {
       mode = 'symbol_text',
       maxwidth = 50,
       ellipsis_char = '...',
@@ -595,12 +595,12 @@ cmp.setup {
         Copilot = '',
         TypeParameter = '',
       },
-    }),
+    },
   },
   sorting = {
     priority_weight = 2,
     comparators = {
-      require("copilot_cmp.comparators").prioritize,
+      require('copilot_cmp.comparators').prioritize,
 
       -- Below is the default comparitor list and order for nvim-cmp
       cmp.config.compare.offset,
