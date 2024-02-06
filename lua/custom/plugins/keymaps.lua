@@ -1,9 +1,9 @@
 -- document existing key chains
 require('which-key').register {
-	['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-	['<leader>l'] = { name = '[L]SP', _ = 'which_key_ignore' },
-	['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-	['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+  ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
+  ['<leader>l'] = { name = '[L]SP', _ = 'which_key_ignore' },
+  ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
+  ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
 }
 
 -- [[ Basic Keymaps ]]

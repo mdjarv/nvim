@@ -24,7 +24,7 @@ return {
 
     for i = 1, 4 do
       vim.keymap.set('n', '<M-' .. i .. '>', function()
-        harpoon:list():select(1)
+        harpoon:list():select(i)
       end, {
         desc = 'Navigate to [' .. i .. ']',
       })
