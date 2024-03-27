@@ -7,7 +7,7 @@ vim.opt.shiftwidth = 2
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 
-vim.opt.conceallevel = 1
+-- vim.opt.conceallevel = 1
 vim.opt.wrap = false
 
 vim.g.copilot_no_tab_map = true
@@ -439,16 +439,26 @@ require('mason-lspconfig').setup()
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-  -- clangd = {},
+  clangd = {},
   gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
+  eslint = {},
+
   tsserver = {},
   html = { filetypes = { 'html', 'twig', 'hbs', 'templ' } },
   htmx = { filetypes = { 'html', 'templ' } },
   tailwindcss = {
     filetypes = { 'templ', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' },
     init_options = { userLanguages = { templ = 'html' } },
+    tailwindCSS = {
+      experimental = {
+        classRegex = {
+          { 'cva\\(([^)]*)\\)', '["\'`]([^"\'`]*).*?["\'`]' },
+          { 'cx\\(([^)]*)\\)', "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+        },
+      },
+    },
   },
   cssls = {},
   jsonls = {},

@@ -1,7 +1,9 @@
 return {
 	'folke/zen-mode.nvim',
+	keys = {
+		{ '<leader>z', '<cmd>ZenMode<cr>', desc = 'Zen mode' }
+	},
 	config = function()
-		vim.keymap.set('n', '<leader>z', '<cmd>ZenMode<cr>')
 		require('zen-mode').setup({
 			window = {
 				backdrop = 0.7,

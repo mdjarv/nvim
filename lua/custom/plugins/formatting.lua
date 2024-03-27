@@ -20,13 +20,14 @@ return {
         async = false,
         quiet = false,
       },
+
       formatters_by_ft = {
-        javascript = { { 'prettier', 'eslint_d' } },
-        typescript = { { 'prettier', 'eslint_d' } },
-        javascriptreact = { { 'prettier', 'eslint_d' } },
-        typescriptreact = { { 'prettier', 'eslint_d' } },
-        css = { { 'prettier', 'eslint_d' } },
-        html = { { 'prettier', 'eslint_d' } },
+        javascript = { { 'prettierd', 'eslint_d' } },
+        typescript = { { 'prettierd', 'eslint_d' } },
+        javascriptreact = { { 'prettierd', 'eslint_d' } },
+        typescriptreact = { { 'prettierd', 'eslint_d' } },
+        css = { { 'prettierd', 'eslint_d' } },
+        html = { { 'prettierd', 'eslint_d' } },
 
         lua = { 'stylua' },
         go = { 'goimports', 'gofmt' },

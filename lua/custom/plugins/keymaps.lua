@@ -4,6 +4,8 @@ require('which-key').register {
   ['<leader>l'] = { name = '[L]SP', _ = 'which_key_ignore' },
   ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+  ['<leader>T'] = { name = '[T]est', _ = 'which_key_ignore' },
+
 }
 
 -- [[ Basic Keymaps ]]
@@ -13,7 +15,7 @@ require('which-key').register {
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- vim.keymap.set('n', '<leader>c', '<cmd>bd<cr>', { desc = 'Close buffer' })
-vim.keymap.set('n', '<leader>q', '<cmd>q<cr>', { desc = 'Quit' })
+vim.keymap.set('n', '<leader>q', '<C-w>c', { desc = 'Close window' })
 
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -43,5 +45,7 @@ vim.keymap.set('n', '<S-l>', ':BufferLineCycleNext<cr>', { desc = 'Next tab' })
 
 -- Edit vimrc
 vim.keymap.set('n', '<leader>,', ':e $MYVIMRC<cr>', { desc = 'Edit Settings' })
+
+vim.keymap.set('v', '<leader>f', '"zy<Cmd>Telescope live_grep<CR><C-r>z', { desc = 'Find selection in workspace' })
 
 return {}
