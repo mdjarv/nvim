@@ -158,15 +158,6 @@ require('lazy').setup({
   },
 
   {
-    'catppuccin/nvim',
-    name = 'catppuccin',
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'catppuccin'
-    end,
-  },
-
-  {
     -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
     -- Enable `lukas-reineke/indent-blankline.nvim`
@@ -443,9 +434,12 @@ local servers = {
   gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
-  eslint = {},
+  -- eslint = {
+  --   filetypes = { 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' },
+  --   cmd = { 'eslint_d', '--stdio' },
+  -- },
 
-  tsserver = {},
+  -- tsserver = {},
   html = { filetypes = { 'html', 'twig', 'hbs', 'templ' } },
   htmx = { filetypes = { 'html', 'templ' } },
   tailwindcss = {
