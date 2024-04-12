@@ -5,7 +5,7 @@ require('which-key').register {
   ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
   ['<leader>T'] = { name = '[T]est', _ = 'which_key_ignore' },
-
+  ['<leader>c'] = { name = '[C]lose tab', _ = 'which_key_ignore' },
 }
 
 -- [[ Basic Keymaps ]]
@@ -42,6 +42,10 @@ vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move to buffer right' })
 
 vim.keymap.set('n', '<S-h>', ':BufferLineCyclePrev<cr>', { desc = 'Previous tab' })
 vim.keymap.set('n', '<S-l>', ':BufferLineCycleNext<cr>', { desc = 'Next tab' })
+
+vim.keymap.set('n', '<leader>co', ':BufferLineCloseOthers<cr>', { desc = 'Close others' })
+vim.keymap.set('n', '<leader>ch', ':BufferLineCloseLeft<cr>', { desc = 'Close left' })
+vim.keymap.set('n', '<leader>cl', ':BufferLineCloseRight<cr>', { desc = 'Close right' })
 
 -- Edit vimrc
 vim.keymap.set('n', '<leader>,', ':e $MYVIMRC<cr>', { desc = 'Edit Settings' })
