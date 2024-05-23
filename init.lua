@@ -454,8 +454,30 @@ local servers = {
       },
     },
   },
-  cssls = {},
+  cssls = {
+    css = {
+      validate = true,
+      lint = {
+        unknownAtRules = 'ignore',
+      },
+    },
+    scss = {
+      validate = true,
+      lint = {
+        unknownAtRules = 'ignore',
+      },
+    },
+    less = {
+      validate = true,
+      lint = {
+        unknownAtRules = 'ignore',
+      },
+    },
+  },
   jsonls = {},
+
+  eslint = {},
+  tsserver = {},
 
   lua_ls = {
     Lua = {

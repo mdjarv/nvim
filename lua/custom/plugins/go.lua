@@ -1,5 +1,6 @@
 return {
   'ray-x/go.nvim',
+  commit='591a0b8',
   dependencies = { -- optional packages
     'ray-x/guihua.lua',
     'neovim/nvim-lspconfig',
