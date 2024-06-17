@@ -22,12 +22,12 @@ return {
       },
 
       formatters_by_ft = {
-        javascript = { { 'prettierd', 'eslint_d' } },
-        typescript = { { 'prettierd', 'eslint_d' } },
-        javascriptreact = { { 'prettierd', 'eslint_d' } },
-        typescriptreact = { { 'prettierd', 'eslint_d' } },
-        css = { { 'prettierd', 'eslint_d' } },
-        html = { { 'prettierd', 'eslint_d' } },
+        javascript = { { 'prettier', 'eslint' } },
+        typescript = { { 'prettier', 'eslint' } },
+        javascriptreact = { { 'prettier', 'eslint' } },
+        typescriptreact = { { 'prettier', 'eslint' } },
+        css = { { 'prettier', 'eslint' } },
+        html = { { 'prettier', 'eslint' } },
 
         lua = { 'stylua' },
         go = { 'goimports', 'gofmt' },
@@ -37,13 +37,5 @@ return {
       --   timeout_ms = 5000,
       -- },
     }
-    --
-    -- vim.keymap.set({ 'n', 'v' }, '<leader>lf', function()
-    --   conform.format {
-    --     lsp_fallback = true,
-    --     async = false,
-    --     timeout_ms = 1000,
-    --   }
-    -- end, { desc = '[F]ormat file or selection' })
   end,
 }
