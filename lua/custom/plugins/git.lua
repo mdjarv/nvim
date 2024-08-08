@@ -1,5 +1,6 @@
-require('which-key').register {
-  ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
+require('which-key').add {
+  { '<leader>g', group = '[G]it' },
+  { '<leader>g_', hidden = true },
 }
 
 return {
