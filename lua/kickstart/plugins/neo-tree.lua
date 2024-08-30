@@ -16,6 +16,7 @@ return {
   opts = {
     filesystem = {
       window = {
+        width = 30,
         mappings = {
           ['<leader>e'] = 'close_window',
           ['h'] = 'close_node',

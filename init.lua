@@ -687,6 +687,11 @@ require('lazy').setup({
       },
     },
     opts = {
+      formatters = {
+        sqlfluff = {
+          args = { 'format', '-' },
+        },
+      },
       notify_on_error = false,
       format_on_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
@@ -694,7 +699,7 @@ require('lazy').setup({
         -- languages here or re-enable it for the disabled ones.
         local disable_filetypes = { c = true, cpp = true }
         return {
-          timeout_ms = 500,
+          timeout_ms = 15000,
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
         }
       end,
@@ -709,7 +714,7 @@ require('lazy').setup({
         javascriptreact = { { 'prettierd', 'prettier' } },
         typescript = { { 'prettierd', 'prettier' } },
         typescriptreact = { { 'prettierd', 'prettier' } },
-        -- sql = { 'sqlfluff' },
+        sql = { 'sqlfluff' },
       },
     },
   },

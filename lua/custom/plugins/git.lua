@@ -21,20 +21,33 @@ return {
     config = true,
   },
   'tpope/vim-rhubarb',
+  -- {
+  --   'kdheepak/lazygit.nvim',
+  --   cmd = {
+  --     'LazyGit',
+  --     'LazyGitConfig',
+  --     'LazyGitCurrentFile',
+  --     'LazyGitFilter',
+  --     'LazyGitFilterCurrentFile',
+  --   },
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --   },
+  --   keys = {
+  --     { '<leader>l', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
+  --   },
+  -- },
   {
-    'kdheepak/lazygit.nvim',
-    cmd = {
-      'LazyGit',
-      'LazyGitConfig',
-      'LazyGitCurrentFile',
-      'LazyGitFilter',
-      'LazyGitFilterCurrentFile',
-    },
+    'NeogitOrg/neogit',
     dependencies = {
       'nvim-lua/plenary.nvim',
+      'sindrets/diffview.nvim',
+
+      'nvim-telescope/telescope.nvim',
     },
+    config = true,
     keys = {
-      { '<leader>l', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
+      { '<leader>ng', '<cmd>Neogit<cr>', desc = 'Neogit' },
     },
   },
 }
