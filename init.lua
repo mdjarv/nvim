@@ -425,6 +425,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+      vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[S]earch [C]ommands' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
@@ -615,8 +616,48 @@ require('lazy').setup({
         ts_ls = {},
         eslint_d = {},
 
-        markdownlint = {},
+        -- markdownlint = {},
 
+        jsonls = {
+          settings = {
+            json = {
+              schemas = require('schemastore').json.schemas(),
+              validate = { enable = true },
+            },
+          },
+        },
+        yamlls = {
+          settings = {
+            yaml = {
+              schemas = require('schemastore').yaml.schemas {
+                extra = {
+                  {
+                    name = '.github/workflows/*.yaml',
+                    description = 'GitHub workflow file',
+                    url = 'https://json.schemastore.org/github-workflow.json',
+                    fileMatch = { '/.github/workflows/*' },
+                  },
+                  {
+                    name = 'kubernetes',
+                    description = 'Kubernetes configuration file',
+                    url = 'https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.18.0-standalone-strict/all.json',
+                    fileMatch = { '/*.k8s.yaml' },
+                  },
+                  {
+                    name = 'kustomization',
+                    description = 'Kustomize configuration file',
+                    url = 'https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/kustomization.json',
+                    fileMatch = { 'kustomization.yaml' },
+                  },
+                },
+              },
+              schemaStore = {
+                enable = false,
+                url = '',
+              },
+            },
+          },
+        },
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -697,7 +738,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        python = { 'isort', 'black' },
+        -- python = { 'isort', 'black' },
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
@@ -712,6 +753,7 @@ require('lazy').setup({
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
+    enabled = true,
     event = 'InsertEnter',
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
@@ -756,19 +798,34 @@ require('lazy').setup({
       local lspkind = require 'lspkind'
       luasnip.config.setup {}
 
+      local has_words_before = function()
+        if vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt' then
+          return false
+        end
+        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match '^%s*$' == nil
+      end
+
       cmp.setup {
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
           end,
         },
-        completion = { completeopt = 'menu,menuone,noinsert' },
+        completion = { completeopt = 'menu,menuone,noinsert,preview' },
 
         -- For an understanding of why these mappings were
         -- chosen, you will need to read `:help ins-completion`
         --
         -- No, but seriously. Please read `:help ins-completion`, it is really good!
         mapping = cmp.mapping.preset.insert {
+          ['<Tab>'] = vim.schedule_wrap(function(fallback)
+            if cmp.visible() and has_words_before() then
+              cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
+            else
+              fallback()
+            end
+          end),
           -- Select the [n]ext item
           ['<C-n>'] = cmp.mapping.select_next_item(),
           -- Select the [p]revious item
@@ -817,7 +874,8 @@ require('lazy').setup({
           --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
         },
         sources = {
-          { name = 'copilot', group_index = 2 },
+          { name = 'copilot' },
+          -- { name = 'supermaven' },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
@@ -854,6 +912,7 @@ require('lazy').setup({
               Event = '',
               Operator = '',
               Copilot = '',
+              Supermaven = '',
               TypeParameter = '',
             },
           },
@@ -861,7 +920,7 @@ require('lazy').setup({
         sorting = {
           priority_weight = 2,
           comparators = {
-            require('copilot_cmp.comparators').prioritize,
+            -- require('copilot_cmp.comparators').prioritize,
 
             -- Below is the default comparitor list and order for nvim-cmp
             cmp.config.compare.offset,
@@ -880,13 +939,34 @@ require('lazy').setup({
     end,
   },
 
+  {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    priority = 1000,
+    opts = {
+      transparent_background = true,
+    },
+    init = function()
+      vim.cmd.colorscheme 'catppuccin'
+      vim.cmd.hi 'Comment gui=none'
+    end,
+  },
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
     'folke/tokyonight.nvim',
+    enabled = false,
+    lazy = false,
     priority = 1000, -- Make sure to load this before all the other start plugins.
+    -- opts = {
+    --   transparent = true,
+    --   styles = {
+    --     sidebars = 'transparent',
+    --     floats = 'transparent',
+    --   },
+    -- },
     init = function()
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
@@ -897,9 +977,6 @@ require('lazy').setup({
       vim.cmd.hi 'Comment gui=none'
     end,
   },
-
-  -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
@@ -942,7 +1019,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {

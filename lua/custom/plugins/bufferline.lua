@@ -14,8 +14,19 @@ return {
   config = function()
     require('bufferline').setup {
       options = {
-        separator_style = 'slant',
+        themeable = true,
+        diagnostics = 'nvim_lsp',
+        -- separator_style = 'slant',
         always_show_bufferline = true,
+        separator_style = 'thick',
+        indicator = {
+          -- icon = '>',
+          style = 'underline',
+        },
+        diagnostics_indicator = function(count, level, diagnostics_dict, context)
+          local icon = level:match 'error' and ' ' or ' '
+          return ' ' .. icon .. count
+        end,
       },
       highlights = {},
     }

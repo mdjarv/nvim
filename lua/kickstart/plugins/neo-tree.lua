@@ -14,6 +14,7 @@ return {
     { '<leader>e', ':Neotree toggle<CR>', { desc = 'NeoTree toggle' } },
   },
   opts = {
+    close_if_last_window = true,
     filesystem = {
       window = {
         width = 30,
@@ -25,6 +26,14 @@ return {
       follow_current_file = {
         enabled = true,
         leave_dirs_open = false,
+      },
+      filtered_items = {
+        always_show = {
+          '.github',
+          '.env',
+          '.gitignore',
+          '.dockerignore',
+        },
       },
     },
   },
