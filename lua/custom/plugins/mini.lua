@@ -62,7 +62,7 @@ return { -- Collection of various small independent plugins/modules
         { name = 'Lazy', action = 'Lazy', section = 'Builtin actions' },
         { name = 'Mason', action = 'Mason', section = 'Builtin actions' },
         starter.sections.builtin_actions(),
-        starter.sections.recent_files(10, true),
+        starter.sections.recent_files(9, true),
       },
       content_hooks = {
         -- starter.gen_hook.adding_bullet(' ', true),
@@ -89,6 +89,17 @@ return { -- Collection of various small independent plugins/modules
     }
 
     require('mini.splitjoin').setup()
+
+    local hipatterns = require 'mini.hipatterns'
+    hipatterns.setup {
+      highlighters = {
+        hex_color = hipatterns.gen_highlighter.hex_color(),
+      },
+    }
+
+    -- require('mini.move').setup({})
+
+    -- require('mini.completion').setup()
 
     -- ... and there is more!
     --  Check out: https://github.com/echasnovski/mini.nvim

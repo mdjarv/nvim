@@ -1,89 +1,3 @@
---[[
-
-=====================================================================
-==================== READ THIS BEFORE CONTINUING ====================
-=====================================================================
-========                                    .-----.          ========
-========         .----------------------.   | === |          ========
-========         |.-""""""""""""""""""-.|   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||   KICKSTART.NVIM   ||   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||                    ||   |-----|          ========
-========         ||:Tutor              ||   |:::::|          ========
-========         |'-..................-'|   |____o|          ========
-========         `"")----------------(""`   ___________      ========
-========        /::::::::::|  |::::::::::\  \ no mouse \     ========
-========       /:::========|  |==hjkl==:::\  \ required \    ========
-========      '""""""""""""'  '""""""""""""'  '""""""""""'   ========
-========                                                     ========
-=====================================================================
-=====================================================================
-
-What is Kickstart?
-
-  Kickstart.nvim is *not* a distribution.
-
-  Kickstart.nvim is a starting point for your own configuration.
-    The goal is that you can read every line of code, top-to-bottom, understand
-    what your configuration is doing, and modify it to suit your needs.
-
-    Once you've done that, you can start exploring, configuring and tinkering to
-    make Neovim your own! That might mean leaving Kickstart just the way it is for a while
-    or immediately breaking it into modular pieces. It's up to you!
-
-    If you don't know anything about Lua, I recommend taking some time to read through
-    a guide. One possible example which will only take 10-15 minutes:
-      - https://learnxinyminutes.com/docs/lua/
-
-    After understanding a bit more about Lua, you can use `:help lua-guide` as a
-    reference for how Neovim integrates Lua.
-    - :help lua-guide
-    - (or HTML version): https://neovim.io/doc/user/lua-guide.html
-
-Kickstart Guide:
-
-  TODO: The very first thing you should do is to run the command `:Tutor` in Neovim.
-
-    If you don't know what this means, type the following:
-      - <escape key>
-      - :
-      - Tutor
-      - <enter key>
-
-    (If you already know the Neovim basics, you can skip this step.)
-
-  Once you've completed that, you can continue working through **AND READING** the rest
-  of the kickstart init.lua.
-
-  Next, run AND READ `:help`.
-    This will open up a help window with some basic information
-    about reading, navigating and searching the builtin help documentation.
-
-    This should be the first place you go to look when you're stuck or confused
-    with something. It's one of my favorite Neovim features.
-
-    MOST IMPORTANTLY, we provide a keymap "<space>sh" to [s]earch the [h]elp documentation,
-    which is very useful when you're not exactly sure of what you're looking for.
-
-  I have left several `:help X` comments throughout the init.lua
-    These are hints about where to find more information about the relevant settings,
-    plugins or Neovim features used in Kickstart.
-
-   NOTE: Look for lines like this
-
-    Throughout the file. These are for you, the reader, to help you understand what is happening.
-    Feel free to delete them once you know what you're doing, but they should serve as a guide
-    for when you are first encountering a few different constructs in your Neovim config.
-
-If you experience any errors while trying to install kickstart, run `:checkhealth` for more info.
-
-I hope you enjoy your Neovim journey,
-- TJ
-
-P.S. You can delete this when you're done too. It's your config now! :)
---]]
-
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -100,6 +14,7 @@ vim.g.copilot_no_tab_map = true
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+vim.opt.tabstop = 4
 -- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
@@ -144,9 +59,8 @@ vim.opt.splitbelow = true
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
-vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
-
+-- vim.opt.list = true
+-- vim.opt.listchars = { tab = '| ', trail = '·', nbsp = '␣' }
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
 
@@ -199,6 +113,12 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- Move lines
+vim.keymap.set('n', '<M-S-j>', ':m .+1<CR>==') -- move line up(n)
+vim.keymap.set('n', '<M-S-k>', ':m .-2<CR>==') -- move line down(n)
+vim.keymap.set('v', '<M-S-j>', ":m '>+1<CR>gv=gv") -- move line up(v)
+vim.keymap.set('v', '<M-S-k>', ":m '<-2<CR>gv=gv") -- move line down(v)
 
 -- Better indent
 vim.keymap.set('v', '<', '<gv', { noremap = true, silent = true })
@@ -320,8 +240,8 @@ require('lazy').setup({
         --
         { '<leader>c', group = '[C]ode' },
         { '<leader>c_', hidden = true },
-        { '<leader>d', group = '[D]ocument' },
-        { '<leader>d_', hidden = true },
+        -- { '<leader>d', group = '[D]ocument' },
+        -- { '<leader>d_', hidden = true },
         { '<leader>h', group = 'Git [H]unk' },
         { '<leader>h_', hidden = true },
         { '<leader>r', group = '[R]ename' },
@@ -478,7 +398,7 @@ require('lazy').setup({
 
       -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
       -- used for completion, annotations and signatures of Neovim apis
-      { 'folke/neodev.nvim', opts = {} },
+      { 'folke/lazydev.nvim', opts = {} },
     },
     config = function()
       -- Brief aside: **What is LSP?**
@@ -541,7 +461,7 @@ require('lazy').setup({
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+          map('<leader>sy', require('telescope.builtin').lsp_document_symbols, '[D]ocument S[y]mbols')
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
@@ -623,8 +543,9 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         gopls = {},
-        ts_ls = {},
-        eslint_d = {},
+        -- ts_ls = {},
+        -- eslint_d = {},
+        biome = {},
 
         -- markdownlint = {},
 
@@ -808,6 +729,19 @@ require('lazy').setup({
       local lspkind = require 'lspkind'
       luasnip.config.setup {}
 
+      local function border(hl_name)
+        return {
+          { '╭', hl_name },
+          { '─', hl_name },
+          { '╮', hl_name },
+          { '│', hl_name },
+          { '╯', hl_name },
+          { '─', hl_name },
+          { '╰', hl_name },
+          { '│', hl_name },
+        }
+      end
+
       local has_words_before = function()
         if vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt' then
           return false
@@ -817,6 +751,15 @@ require('lazy').setup({
       end
 
       cmp.setup {
+        window = {
+          completion = {
+            border = border 'CmpBorder',
+            winhighlight = 'Normal:CmpPmenu,CursorLine:PmenuSel,Search:None',
+          },
+          documentation = {
+            border = border 'CmpDocBorder',
+          },
+        },
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
@@ -886,6 +829,7 @@ require('lazy').setup({
         sources = {
           { name = 'copilot' },
           -- { name = 'supermaven' },
+          { name = 'lazydev', group_index = 0 },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
@@ -893,58 +837,58 @@ require('lazy').setup({
         ---@diagnostic disable-next-line: missing-fields
         formatting = {
           format = lspkind.cmp_format {
-            mode = 'symbol_text',
+            mode = 'symbol',
             maxwidth = 50,
             ellipsis_char = '...',
 
-            preset = 'codicons',
+            -- preset = 'codicons',
             symbol_map = {
-              Text = '',
-              Method = '',
-              Function = '',
-              Constructor = '',
-              Variable = '',
-              Class = 'ﴯ',
-              Interface = '',
-              Module = '',
-              Property = 'ﰠ',
-              Unit = '塞',
-              Value = '',
-              Enum = '',
-              Keyword = '',
+              -- Text = '',
+              -- Method = '',
+              -- Function = '',
+              -- Constructor = '',
+              -- Variable = '',
+              -- Class = 'ﴯ',
+              -- Interface = '',
+              -- Module = '',
+              -- Property = 'ﰠ',
+              -- Unit = '塞',
+              -- Value = '',
+              -- Enum = '',
+              -- Keyword = '',
               Snippet = '',
-              Color = '',
-              File = '',
-              Folder = '',
-              EnumMember = '',
-              Constant = '',
-              Struct = 'פּ',
-              Event = '',
-              Operator = '',
+              -- Color = '',
+              -- File = '',
+              -- Folder = '',
+              -- EnumMember = '',
+              -- Constant = '',
+              -- Struct = 'פּ',
+              -- Event = '',
+              -- Operator = '',
               Copilot = '',
               Supermaven = '',
               TypeParameter = '',
             },
           },
         },
-        sorting = {
-          priority_weight = 2,
-          comparators = {
-            -- require('copilot_cmp.comparators').prioritize,
-
-            -- Below is the default comparitor list and order for nvim-cmp
-            cmp.config.compare.offset,
-            -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
-            cmp.config.compare.exact,
-            cmp.config.compare.score,
-            cmp.config.compare.recently_used,
-            cmp.config.compare.locality,
-            cmp.config.compare.kind,
-            cmp.config.compare.sort_text,
-            cmp.config.compare.length,
-            cmp.config.compare.order,
-          },
-        },
+        -- sorting = {
+        --   priority_weight = 2,
+        --   comparators = {
+        --     require('copilot_cmp.comparators').prioritize,
+        --
+        --     -- Below is the default comparitor list and order for nvim-cmp
+        --     cmp.config.compare.offset,
+        --     -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+        --     cmp.config.compare.exact,
+        --     cmp.config.compare.score,
+        --     cmp.config.compare.recently_used,
+        --     cmp.config.compare.locality,
+        --     cmp.config.compare.kind,
+        --     cmp.config.compare.sort_text,
+        --     cmp.config.compare.length,
+        --     cmp.config.compare.order,
+        --   },
+        -- },
       }
     end,
   },
@@ -956,6 +900,13 @@ require('lazy').setup({
     priority = 1000,
     opts = {
       transparent_background = true,
+      custom_highlights = function(colors)
+        return {
+          Pmenu = { bg = colors.base },
+          NormalFloat = { bg = colors.base },
+          CursorLine = { bg = colors.base },
+        }
+      end,
     },
     init = function()
       vim.cmd.colorscheme 'catppuccin'

@@ -30,4 +30,21 @@ return {
       vim.api.nvim_set_hl(0, 'CmpItemKindCopilot', { fg = '#6CC644' })
     end,
   },
+  {
+    'CopilotC-Nvim/CopilotChat.nvim',
+    branch = 'canary',
+    dependencies = {
+      'zbirenbaum/copilot.lua',
+      'nvim-lua/plenary.nvim',
+    },
+    build = 'make tiktoken',
+    keys = {
+      { '<leader>cc', '<cmd>CopilotChatToggle<cr>' },
+    },
+    opts = {
+      window = {
+        width = 80,
+      },
+    },
+  },
 }
