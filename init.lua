@@ -114,6 +114,11 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+vim.keymap.set('n', '<C-M-h>', '<cmd>vertical resize -2<cr>', { desc = 'Shrink window heigh' })
+vim.keymap.set('n', '<C-M-l>', '<cmd>vertical resize +2<cr>', { desc = 'Grow window heigh' })
+vim.keymap.set('n', '<C-M-j>', '<cmd>resize +2<cr>', { desc = 'Grow window width' })
+vim.keymap.set('n', '<C-M-k>', '<cmd>resize -2<cr>', { desc = 'Shrink window width' })
+
 -- Move lines
 vim.keymap.set('n', '<M-S-j>', ':m .+1<CR>==') -- move line up(n)
 vim.keymap.set('n', '<M-S-k>', ':m .-2<CR>==') -- move line down(n)
@@ -248,8 +253,8 @@ require('lazy').setup({
         { '<leader>r_', hidden = true },
         { '<leader>s', group = '[S]earch' },
         { '<leader>s_', hidden = true },
-        { '<leader>t', group = '[T]oggle' },
-        { '<leader>t_', hidden = true },
+        { '<leader>T', group = '[T]oggle' },
+        { '<leader>T_', hidden = true },
         { '<leader>w', group = '[W]orkspace' },
         { '<leader>w_', hidden = true },
         { '<leader>h', desc = 'Git [H]unk', mode = 'v' },
@@ -517,7 +522,7 @@ require('lazy').setup({
           --
           -- This may be unwanted, since they displace some of your code
           if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
-            map('<leader>th', function()
+            map('<leader>Th', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
             end, '[T]oggle Inlay [H]ints')
           end
@@ -542,10 +547,19 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
+
+        -- Go
+        goimports = {},
+        gofumpt = {},
         gopls = {},
-        -- ts_ls = {},
-        -- eslint_d = {},
-        biome = {},
+        gomodifytags = {},
+        impl = {},
+
+        delve = {},
+
+        ts_ls = {},
+        eslint_d = {},
+        -- biome = {},
 
         -- markdownlint = {},
 
@@ -827,7 +841,7 @@ require('lazy').setup({
           --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
         },
         sources = {
-          { name = 'copilot' },
+          { name = 'copilot', group_index = 2 },
           -- { name = 'supermaven' },
           { name = 'lazydev', group_index = 0 },
           { name = 'nvim_lsp' },
@@ -843,52 +857,52 @@ require('lazy').setup({
 
             -- preset = 'codicons',
             symbol_map = {
-              -- Text = '',
-              -- Method = '',
-              -- Function = '',
-              -- Constructor = '',
-              -- Variable = '',
-              -- Class = 'ﴯ',
-              -- Interface = '',
-              -- Module = '',
-              -- Property = 'ﰠ',
-              -- Unit = '塞',
-              -- Value = '',
-              -- Enum = '',
-              -- Keyword = '',
+              Text = '',
+              Method = '',
+              Function = '',
+              Constructor = '',
+              Variable = '',
+              Class = 'ﴯ',
+              Interface = '',
+              Module = '',
+              Property = 'ﰠ',
+              Unit = '塞',
+              Value = '',
+              Enum = '',
+              Keyword = '',
               Snippet = '',
-              -- Color = '',
-              -- File = '',
-              -- Folder = '',
-              -- EnumMember = '',
-              -- Constant = '',
-              -- Struct = 'פּ',
-              -- Event = '',
-              -- Operator = '',
+              Color = '',
+              File = '',
+              Folder = '',
+              EnumMember = '',
+              Constant = '',
+              Struct = 'פּ',
+              Event = '',
+              Operator = '',
               Copilot = '',
               Supermaven = '',
               TypeParameter = '',
             },
           },
         },
-        -- sorting = {
-        --   priority_weight = 2,
-        --   comparators = {
-        --     require('copilot_cmp.comparators').prioritize,
-        --
-        --     -- Below is the default comparitor list and order for nvim-cmp
-        --     cmp.config.compare.offset,
-        --     -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
-        --     cmp.config.compare.exact,
-        --     cmp.config.compare.score,
-        --     cmp.config.compare.recently_used,
-        --     cmp.config.compare.locality,
-        --     cmp.config.compare.kind,
-        --     cmp.config.compare.sort_text,
-        --     cmp.config.compare.length,
-        --     cmp.config.compare.order,
-        --   },
-        -- },
+        sorting = {
+          priority_weight = 2,
+          comparators = {
+            require('copilot_cmp.comparators').prioritize,
+
+            -- Below is the default comparitor list and order for nvim-cmp
+            cmp.config.compare.offset,
+            -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+            cmp.config.compare.exact,
+            cmp.config.compare.score,
+            cmp.config.compare.recently_used,
+            cmp.config.compare.locality,
+            cmp.config.compare.kind,
+            cmp.config.compare.sort_text,
+            cmp.config.compare.length,
+            cmp.config.compare.order,
+          },
+        },
       }
     end,
   },
@@ -900,6 +914,13 @@ require('lazy').setup({
     priority = 1000,
     opts = {
       transparent_background = true,
+      -- color_overrides = {
+      --   mocha = {
+      --     base = '#000000',
+      --     mantle = '#000000',
+      --     crust = '#000000',
+      --   },
+      -- },
       custom_highlights = function(colors)
         return {
           Pmenu = { bg = colors.base },
@@ -964,6 +985,11 @@ require('lazy').setup({
           node_decremental = '<BS>',
         },
       },
+      textobjects = {
+        -- select = {
+        --   ena
+        -- }
+      },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
@@ -994,7 +1020,7 @@ require('lazy').setup({
   require 'kickstart.plugins.debug',
   require 'kickstart.plugins.indent_line',
   require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 

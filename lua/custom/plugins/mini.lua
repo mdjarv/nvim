@@ -18,7 +18,19 @@ return { -- Collection of various small independent plugins/modules
     --  - va)  - [V]isually select [A]round [)]paren
     --  - yinq - [Y]ank [I]nside [N]ext [']quote
     --  - ci'  - [C]hange [I]nside [']quote
-    require('mini.ai').setup { n_lines = 500 }
+    require('mini.ai').setup {
+      n_lines = 500,
+      custom_textobects = {
+        o = require('mini.ai').gen_spec.treesitter {
+          a = { '@block.outer', '@conditional.outer', '@loop.outer' },
+          i = { '@block.inner', '@conditional.inner', '@loop.inner' },
+        },
+        f = require('mini.ai').gen_spec.treesitter {
+          a = '@function.outer',
+          i = '@function.inner',
+        },
+      },
+    }
 
     -- Add/delete/replace surroundings (brackets, quotes, etc.)
     --
@@ -101,7 +113,36 @@ return { -- Collection of various small independent plugins/modules
 
     -- require('mini.completion').setup()
 
+    -- require('mini.files').setup {
+    --   windows = {
+    --     preview = true,
+    --     width_focus = 50,
+    --     width_preview = 50,
+    --   },
+    -- }
+    -- require('which-key').add {
+    --   {
+    --     '<leader>e',
+    --     function()
+    --       MiniFiles.open(vim.api.nvim_buf_get_name(0), true)
+    --     end,
+    --     desc = 'Open file',
+    --   },
+    -- }
+
     -- ... and there is more!
     --  Check out: https://github.com/echasnovski/mini.nvim
+
+    require('mini.bufremove').setup()
+
+    -- require('which-key').add {
+    --   {
+    --     '<leader>cb',
+    --     function()
+    --       MiniBufremove.delete()
+    --     end,
+    --     desc = '[C]lose [B]uffer',
+    --   },
+    -- }
   end,
 }

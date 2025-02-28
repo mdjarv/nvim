@@ -9,7 +9,7 @@ return {
     build = ':Copilot auth',
     config = function()
       require('copilot').setup {
-        suggestion = { enabled = true, auto_trigger = false },
+        suggestion = { enabled = false },
         panel = { enabled = false },
         filetypes = { ['*'] = true },
       }
@@ -31,20 +31,41 @@ return {
     end,
   },
   {
+    'MeanderingProgrammer/render-markdown.nvim',
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {
+      file_types = { 'markdown', 'copilot-chat' },
+    },
+  },
+  {
     'CopilotC-Nvim/CopilotChat.nvim',
-    branch = 'canary',
     dependencies = {
       'zbirenbaum/copilot.lua',
       'nvim-lua/plenary.nvim',
+      'MeanderingProgrammer/render-markdown.nvim',
     },
     build = 'make tiktoken',
     keys = {
-      { '<leader>cc', '<cmd>CopilotChatToggle<cr>' },
+      { '<leader>cc', '<cmd>CopilotChatToggle<cr>', mode = { 'n', 'x' }, desc = '[C]opilot [C]hat' },
+      { '<leader>cf', '<cmd>CopilotChatFix<cr>', mode = { 'n', 'x' }, desc = '[C]opilot [F]ix' },
     },
     opts = {
       window = {
         width = 80,
       },
+      highlight_headers = false,
+      separator = '---',
+      error_header = '> [!ERROR] Error',
+      model = 'claude-3.7-sonnet',
+    },
+  },
+  {
+    'David-Kunz/gen.nvim',
+    opts = {
+      model = 'mistral',
     },
   },
 }
