@@ -1,5 +1,4 @@
 return {
-
   { -- Linting
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
@@ -12,6 +11,8 @@ return {
         go = { 'revive' },
         sql = { 'sqlfluff' },
       }
+
+      lint.linters.sqlfluff.args = { '--config', '.sqlfluff' }
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
       -- instead set linters_by_ft like this:

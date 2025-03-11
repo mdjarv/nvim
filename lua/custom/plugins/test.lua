@@ -5,17 +5,28 @@ return {
     'nvim-lua/plenary.nvim',
     'antoinemadec/FixCursorHold.nvim',
     'nvim-treesitter/nvim-treesitter',
-    { 'fredrikaverpil/neotest-golang', version = '*' },
-    -- 'nvim-neotest/neotest-go',
+    -- { 'fredrikaverpil/neotest-golang', version = '*' },
+    'nvim-neotest/neotest-go',
   },
   config = function()
+    local neotest_ns = vim.api.nvim_create_namespace 'neotest'
+    vim.diagnostic.config({
+      virtual_text = {
+        format = function(diagnostic)
+          local message = diagnostic.message:gsub('\n', ' '):gsub('\t', ' '):gsub('%s+', ' '):gsub('^%s+', '')
+          return message
+        end,
+      },
+    }, neotest_ns)
+
     require('neotest').setup {
       adapters = {
-        -- require 'neotest-go',
-        require 'neotest-golang' {
-          testify_enabled = true,
-          --   runner = 'gotestsum',
-        },
+        -- require 'neotest-golang' {
+        --   log_level = 1,
+        --   testify_enabled = true,
+        --   --   runner = 'gotestsum',
+        -- },
+        require 'neotest-go',
       },
     }
 
