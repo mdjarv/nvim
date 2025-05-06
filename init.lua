@@ -69,6 +69,7 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
+vim.opt.sidescrolloff = 10
 
 vim.opt.wrap = false
 
@@ -346,10 +347,17 @@ require('lazy').setup({
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
+      local utils = require 'telescope.utils'
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
+      -- vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
+      vim.keymap.set('n', '<leader>ss', function()
+        builtin.live_grep {
+          cwd = utils.buffer_dir(),
+          prompt_title = 'Search Current Directory',
+        }
+      end, { desc = '[S]earch Current Directory' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
@@ -842,7 +850,7 @@ require('lazy').setup({
         },
         sources = {
           { name = 'copilot', group_index = 2 },
-          -- { name = 'supermaven' },
+          { name = 'supermaven', group_index = 2 },
           { name = 'lazydev', group_index = 0 },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
@@ -888,7 +896,7 @@ require('lazy').setup({
         sorting = {
           priority_weight = 2,
           comparators = {
-            -- require('copilot_cmp.comparators').prioritize,
+            require('copilot_cmp.comparators').prioritize,
 
             -- Below is the default comparitor list and order for nvim-cmp
             cmp.config.compare.offset,
@@ -925,7 +933,7 @@ require('lazy').setup({
         return {
           Pmenu = { bg = colors.base },
           NormalFloat = { bg = colors.base },
-          CursorLine = { bg = colors.base },
+          -- CursorLine = { bg = colors.base },
         }
       end,
     },
@@ -986,9 +994,27 @@ require('lazy').setup({
         },
       },
       textobjects = {
-        -- select = {
-        --   ena
-        -- }
+        move = {
+          enable = true,
+          set_jumps = true, -- whether to set jumps in the jumplist
+          goto_next_start = {
+            [']a'] = '@parameter.next',
+          },
+          goto_previous_start = {
+            ['[a'] = '@parameter.prev',
+          },
+        },
+        select = {
+          enable = true,
+          lookahead = true,
+          keymaps = {
+            -- You can use the capture groups defined in textobjects.scm
+            ['af'] = '@function.outer',
+            ['if'] = '@function.inner',
+            ['aa'] = '@parameter.outer',
+            ['ia'] = '@parameter.inner',
+          },
+        },
       },
     },
     config = function(_, opts)
@@ -1006,6 +1032,14 @@ require('lazy').setup({
       --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
+  },
+
+  {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    after = 'nvim-treesitter',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+    },
   },
 
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the

@@ -34,7 +34,7 @@ return {
       end,
     },
     {
-      '<C-S-a>',
+      '<leader>ha',
       function()
         require('harpoon'):list():add()
       end,

@@ -31,32 +31,32 @@ return {
           { 'macro-recording', fmt = show_macro_recording, fg = '#ff0000' },
         },
         lualine_x = {
-          {
-            'copilot',
-            symbols = {
-              status = {
-                icons = {
-                  enabled = ' ',
-                  sleep = ' ', -- auto-trigger disabled
-                  disabled = ' ',
-                  warning = ' ',
-                  unknown = ' ',
-                },
-                hl = {
-                  enabled = require('copilot-lualine.colors').get_hl_value(0, 'DiagnosticWarn', 'fg'), -- hl value
-                  -- enabled = '#50FA7B',
-                  sleep = '#AEB7D0',
-                  disabled = '#6272A4',
-                  warning = '#FFB86C',
-                  unknown = '#FF5555',
-                },
-              },
-              spinners = require('copilot-lualine.spinners').dots,
-              spinner_color = '#6272A4',
-            },
-            show_colors = true,
-            show_loading = true,
-          },
+          -- {
+          --   'copilot',
+          --   symbols = {
+          --     status = {
+          --       icons = {
+          --         enabled = ' ',
+          --         sleep = ' ', -- auto-trigger disabled
+          --         disabled = ' ',
+          --         warning = ' ',
+          --         unknown = ' ',
+          --       },
+          --       hl = {
+          --         enabled = require('copilot-lualine.colors').get_hl_value(0, 'DiagnosticWarn', 'fg'), -- hl value
+          --         -- enabled = '#50FA7B',
+          --         sleep = '#AEB7D0',
+          --         disabled = '#6272A4',
+          --         warning = '#FFB86C',
+          --         unknown = '#FF5555',
+          --       },
+          --     },
+          --     spinners = require('copilot-lualine.spinners').dots,
+          --     spinner_color = '#6272A4',
+          --   },
+          --   show_colors = true,
+          --   show_loading = true,
+          -- },
           'filetype',
         },
         lualine_y = { 'progress' },

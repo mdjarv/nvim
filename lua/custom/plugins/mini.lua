@@ -144,5 +144,7 @@ return { -- Collection of various small independent plugins/modules
     --     desc = '[C]lose [B]uffer',
     --   },
     -- }
+
+    require('mini.pick').setup()
   end,
 }
