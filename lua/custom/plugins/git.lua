@@ -37,19 +37,19 @@ return {
   --     { '<leader>l', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
   --   },
   -- },
-  {
-    'NeogitOrg/neogit',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'sindrets/diffview.nvim',
-
-      'nvim-telescope/telescope.nvim',
-    },
-    config = true,
-    keys = {
-      { '<leader>ng', '<cmd>Neogit<cr>', desc = 'Neogit' },
-    },
-  },
+  -- {
+  --   'NeogitOrg/neogit',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'sindrets/diffview.nvim',
+  --
+  --     'nvim-telescope/telescope.nvim',
+  --   },
+  --   config = true,
+  --   keys = {
+  --     { '<leader>ng', '<cmd>Neogit<cr>', desc = 'Neogit' },
+  --   },
+  -- },
   -- {
   --   'topaxi/pipeline.nvim',
   --   keys = {

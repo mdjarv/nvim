@@ -1,103 +1,153 @@
+local model_names = {
+  -- 'claude-1.3',
+  -- 'claude-1.3-100k',
+  -- 'claude-2.0',
+  -- 'claude-2.1',
+  'claude-3.5-sonnet',
+  'claude-3.7-sonnet',
+  'claude-3.7-sonnet-thought',
+  -- 'claude-3-sonnet-20240229',
+  -- 'claude-instant-1.1',
+  -- 'claude-instant-1.1-100k',
+  -- 'claude-instant-1.2',
+  'gemini-2.0-flash',
+  -- 'gemini-2.0-flash-001',
+  'gemini-2.0-pro',
+  -- 'gemini-2.0-pro-exp-02-05',
+  -- 'gpt-3.5-turbo',
+  -- 'gpt-4',
+  'gpt-4.1',
+  -- 'gpt-4.5',
+  'gpt-4o',
+  'gpt-4o-copilot',
+  -- 'gpt-4o-instant-apply-full-ft',
+  -- 'gpt-4o-instant-apply-full-ft-ppe-a',
+  'gpt-4o-mini',
+  -- 'gpt-4-turbo',
+}
+
 return {
   'yetone/avante.nvim',
   enabled = true,
   event = 'VeryLazy',
-  version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
-  keys = {
-    -- { '<leader>cc', '<cmd>AvanteToggle<cr>', desc = 'Avante toggle' },
-  },
-  opts = {
-    -- auto_suggestions_provider = 'copilot',
-    -- behaviour = {
-    --   auto_suggestions = false,
-    --   auto_suggestions_debounce = 500,
-    --   auto_set_highlight_group = true,
-    --   auto_set_keymaps = true,
-    --   auto_apply_diff_after_generation = false,
-    --   support_paste_from_clipboard = false,
-    --   minimize_diff = true,
-    -- },
-    provider = 'copilot',
-    copilot = {
-      -- model = 'claude-3.7-sonnet',
-      temperature = 0.1,
-    },
-    -- openai = {
-    --   endpoint = 'https://api.openai.com/v1',
-    --   model = 'gpt-4o', -- your desired model (or use gpt-4o, etc.)
-    --   timeout = 30000, -- timeout in milliseconds
-    --   temperature = 0, -- adjust if needed
-    --   max_tokens = 4096,
-    --   -- reasoning_effort = "high" -- only supported for reasoning models (o1, etc.)
-    -- },
-    -- Add Go test tool
-    -- custom_tools = {
-    --   {
-    --     name = 'Go Test',
-    --     description = 'Run Go tests in the current directory',
-    --     run = function()
-    --       local job = require 'plenary.job'
-    --       local output = ''
-    --       job
-    --         :new({
-    --           command = 'go',
-    --           args = { 'test', './...' },
-    --           cwd = vim.fn.getcwd(),
-    --           on_stdout = function(_, data)
-    --             output = output .. table.concat(data, '\n')
-    --           end,
-    --           on_stderr = function(_, data)
-    --             output = output .. table.concat(data, '\n')
-    --           end,
-    --           on_exit = function(j, return_code)
-    --             output = output .. '\nJob finished with return code: ' .. return_code
-    --           end,
-    --         })
-    --         :sync()
-    --       return output
-    --     end,
-    --   },
-    -- },
-  },
-  -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+  version = false, -- Using latest version to get the most recent fixes
+  config = function()
+    local vendors = {}
+    for _, model in ipairs(model_names) do
+      vendors['copilot-' .. model] = {
+        __inherited_from = 'copilot',
+        model = model,
+      }
+    end
+
+    require('avante').setup {
+      provider = 'copilot',
+
+      -- temperature = 0.1, -- Slight increase for more creative responses
+      -- top_p = 0.95, -- Add top_p for better response quality
+      -- top_k = 50, -- Add top_k for better response filtering
+      -- max_tokens = 4096,
+      -- timeout = 60000, -- Increase timeout for complex queries
+      auto_suggestions_provider = 'copilot',
+      copilot = {
+        model = 'gpt-4.1',
+        -- temperature = 0.1,
+      },
+      -- Token counting configuration (helps track token usage)
+      token_counting = {
+        enabled = true, -- Enable token counting for cost awareness
+        show_in_status_line = true, -- Don't show in status line to keep it clean
+      },
+      system_prompt = function()
+        local hub = require('mcphub').get_hub_instance()
+        local prompt = hub and hub:get_active_servers_prompt() or ''
+        -- vim.notify('[Avante] mcphub active servers prompt: ' .. prompt, vim.log.levels.DEBUG)
+        return prompt
+      end,
+      custom_tools = function()
+        return {
+          require('mcphub.extensions.avante').mcp_tool(),
+        }
+      end,
+      disabled_tools = {
+        'list_files',
+        'search_files',
+        'read_file',
+        'create_file',
+        'rename_file',
+        'delete_file',
+        'create_dir',
+        'rename_dir',
+        'delete_dir',
+        'bash',
+      },
+      windows = {
+        position = 'right',
+        wrap = true,
+        width = 40,
+        sidebar_header = {
+          enabled = true,
+          align = 'left',
+          rounded = false,
+        },
+        input = {
+          rounded = true,
+          prefix = '󰭹 ',
+          height = 8,
+        },
+        edit = {
+          border = 'rounded',
+          start_insert = true,
+        },
+        ask = {
+          floating = false,
+          start_insert = true,
+          border = 'rounded',
+          focus_on_apply = 'ours',
+        },
+      },
+      highlights = {
+        diff = {
+          current = 'DiffText',
+          incoming = 'DiffAdd',
+        },
+      },
+      diff = {
+        autojump = true,
+        list_opener = 'copen',
+        override_timeoutlen = 500,
+      },
+      vendors = vendors,
+    }
+  end,
   build = 'make',
-  -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
   dependencies = {
-    'nvim-treesitter/nvim-treesitter',
+    'ravitemer/mcphub.nvim',
     'stevearc/dressing.nvim',
     'nvim-lua/plenary.nvim',
     'MunifTanjim/nui.nvim',
-    --- The below dependencies are optional,
-    'echasnovski/mini.pick', -- for file_selector provider mini.pick
-    'nvim-telescope/telescope.nvim', -- for file_selector provider telescope
-    'hrsh7th/nvim-cmp', -- autocompletion for avante commands and mentions
-    'ibhagwan/fzf-lua', -- for file_selector provider fzf
-    'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
-    'zbirenbaum/copilot.lua', -- for providers='copilot'
+    'hrsh7th/nvim-cmp',
+    'nvim-tree/nvim-web-devicons',
     {
-      -- support for image pasting
       'HakonHarnes/img-clip.nvim',
       event = 'VeryLazy',
       opts = {
-        -- recommended settings
         default = {
           embed_image_as_base64 = false,
           prompt_for_file_name = false,
           drag_and_drop = {
             insert_mode = true,
           },
-          -- required for Windows users
           use_absolute_path = true,
         },
       },
     },
-    -- {
-    --   -- Make sure to set this up properly if you have lazy=true
-    --   'MeanderingProgrammer/render-markdown.nvim',
-    --   opts = {
-    --     file_types = { 'markdown', 'Avante' },
-    --   },
-    -- ft = { 'markdown', 'Avante' },
-    -- },
+    {
+      'MeanderingProgrammer/render-markdown.nvim',
+      opts = {
+        file_types = { 'markdown', 'Avante' },
+      },
+      ft = { 'markdown', 'Avante' },
+    },
   },
 }
