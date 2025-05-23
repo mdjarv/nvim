@@ -18,25 +18,25 @@ return {
       { '<leader>gP', '<cmd>Git push<cr>', desc = 'Git Push' },
       { '<leader>gf', '<cmd>Git fetch<cr>', desc = 'Git Fetch' },
     },
-    config = true,
+    config = function() end,
   },
   'tpope/vim-rhubarb',
-  -- {
-  --   'kdheepak/lazygit.nvim',
-  --   cmd = {
-  --     'LazyGit',
-  --     'LazyGitConfig',
-  --     'LazyGitCurrentFile',
-  --     'LazyGitFilter',
-  --     'LazyGitFilterCurrentFile',
-  --   },
-  --   dependencies = {
-  --     'nvim-lua/plenary.nvim',
-  --   },
-  --   keys = {
-  --     { '<leader>l', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
-  --   },
-  -- },
+  {
+    'kdheepak/lazygit.nvim',
+    cmd = {
+      'LazyGit',
+      'LazyGitConfig',
+      'LazyGitCurrentFile',
+      'LazyGitFilter',
+      'LazyGitFilterCurrentFile',
+    },
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    keys = {
+      { '<leader>l', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
+    },
+  },
   -- {
   --   'NeogitOrg/neogit',
   --   dependencies = {
