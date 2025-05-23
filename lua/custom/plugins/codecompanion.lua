@@ -9,7 +9,7 @@ return {
     'olimorris/codecompanion.nvim',
     enabled = true,
     init = function()
-      require('custom.plugins.codecompanion.fidget-spinner'):init()
+      -- require('custom.plugins.codecompanion.fidget-spinner'):init()
     end,
     event = 'VeryLazy',
     dependencies = {
