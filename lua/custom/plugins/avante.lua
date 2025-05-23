@@ -1,30 +1,77 @@
-local model_names = {
-  -- 'claude-1.3',
-  -- 'claude-1.3-100k',
-  -- 'claude-2.0',
-  -- 'claude-2.1',
-  'claude-3.5-sonnet',
-  'claude-3.7-sonnet',
-  'claude-3.7-sonnet-thought',
-  -- 'claude-3-sonnet-20240229',
-  -- 'claude-instant-1.1',
-  -- 'claude-instant-1.1-100k',
-  -- 'claude-instant-1.2',
-  'gemini-2.0-flash',
-  -- 'gemini-2.0-flash-001',
-  'gemini-2.0-pro',
-  -- 'gemini-2.0-pro-exp-02-05',
-  -- 'gpt-3.5-turbo',
-  -- 'gpt-4',
-  'gpt-4.1',
-  -- 'gpt-4.5',
-  'gpt-4o',
-  'gpt-4o-copilot',
-  -- 'gpt-4o-instant-apply-full-ft',
-  -- 'gpt-4o-instant-apply-full-ft-ppe-a',
-  'gpt-4o-mini',
-  -- 'gpt-4-turbo',
-}
+local function AvanteUpdate()
+  local url = 'https://main.vscode-cdn.net/extensions/copilotChat.json'
+  local local_json_path = vim.fn.stdpath 'config' .. '/lua/custom/plugins/ai/copilot-models.json'
+
+  local status, response = pcall(vim.fn.system, { 'curl', '-f', '-s', '-o', local_json_path, url })
+
+  if not status or vim.v.shell_error ~= 0 then
+    vim.notify('[Avante] Failed to download copilot-models.json: ' .. (response or 'Unknown error'), vim.log.levels.ERROR)
+    return
+  end
+
+  vim.notify('[Avante] Successfully updated copilot-models.json', vim.log.levels.INFO)
+  vim.cmd 'redraw!' -- Redraw Neovim to reflect potential changes
+end
+
+-- Function to load Copilot model names from a local JSON file
+-- Defined at the top-level, before the main plugin return table
+local function load_copilot_models(json_path)
+  local dynamic_model_names = {}
+  local default_fallback_models = {
+    'claude-3.5-sonnet',
+    'gemini-2.0-flash',
+    'gemini-2.0-pro',
+    'gpt-4.1',
+    'gpt-4o',
+    'gpt-4o-copilot',
+    'gpt-4o-mini',
+  }
+
+  -- Read the local JSON file
+  local json_content_lines = vim.fn.readfile(json_path)
+
+  -- Guard clause: If file content is empty or nil, use fallback and return
+  if not json_content_lines or #json_content_lines == 0 then
+    vim.notify('[Avante] Failed to read local copilot-models.json. File might not exist or is empty. Using fallback models.', vim.log.levels.ERROR)
+    return default_fallback_models
+  end
+
+  local json_content = table.concat(json_content_lines, '\n')
+
+  -- Attempt to parse the JSON content
+  -- local status, parsed_json = pcall(plenary_json.decode, json_content)
+  local status, parsed_json = pcall(vim.fn.json_decode, json_content)
+
+  -- Guard clause: If JSON parsing fails, use fallback and return
+  if not status then
+    vim.notify('[Avante] Failed to parse local copilot-models.json: ' .. parsed_json .. '. Using fallback models.', vim.log.levels.ERROR)
+    return default_fallback_models
+  end
+
+  local model_data = parsed_json
+
+  -- Guard clause: If 'modelInfo' key is missing or not a table, use fallback and return
+  if not model_data or type(model_data.modelInfo) ~= 'table' then
+    vim.notify('[Avante] Local Copilot JSON structure unexpected. Missing or invalid "modelInfo" key. Using fallback models.', vim.log.levels.WARN)
+    return default_fallback_models
+  end
+
+  -- Extract model names
+  for _, vendor_models in pairs(model_data.modelInfo) do
+    for model_name, _ in pairs(vendor_models) do
+      table.insert(dynamic_model_names, model_name)
+    end
+  end
+
+  -- Guard clause: If no models were extracted, use fallback and return
+  if #dynamic_model_names == 0 then
+    vim.notify('[Avante] No models found in local Copilot JSON. Using fallback models.', vim.log.levels.WARN)
+    return default_fallback_models
+  end
+
+  vim.notify('[Avante] Successfully loaded ' .. #dynamic_model_names .. ' models from local Copilot JSON.', vim.log.levels.INFO)
+  return dynamic_model_names
+end
 
 return {
   'yetone/avante.nvim',
@@ -32,6 +79,10 @@ return {
   event = 'VeryLazy',
   version = false, -- Using latest version to get the most recent fixes
   config = function()
+    local local_json_path = vim.fn.stdpath 'config' .. '/lua/custom/plugins/ai/copilot-models.json'
+    local model_names = load_copilot_models(local_json_path)
+
+    -- Populate the 'vendors' table using the obtained model names
     local vendors = {}
     for _, model in ipairs(model_names) do
       vendors['copilot-' .. model] = {
@@ -40,18 +91,20 @@ return {
       }
     end
 
+    -- Define the user command :AvanteUpdate
+    vim.api.nvim_create_user_command('AvanteUpdate', AvanteUpdate, {
+      desc = 'Download and update copilot-models.json for Avante.nvim',
+      bang = true, -- Allows :AvanteUpdate! for forceful execution if needed (though not strictly used by the function itself)
+    })
+
     require('avante').setup {
       provider = 'copilot',
 
-      -- temperature = 0.1, -- Slight increase for more creative responses
-      -- top_p = 0.95, -- Add top_p for better response quality
-      -- top_k = 50, -- Add top_k for better response filtering
-      -- max_tokens = 4096,
-      -- timeout = 60000, -- Increase timeout for complex queries
       auto_suggestions_provider = 'copilot',
+
+      -- Default model for the provider
       copilot = {
         model = 'gpt-4.1',
-        -- temperature = 0.1,
       },
       -- Token counting configuration (helps track token usage)
       token_counting = {
