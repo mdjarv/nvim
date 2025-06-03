@@ -272,39 +272,39 @@ return { -- Collection of various small independent plugins/modules
     --   autoload = true,
     -- }
 
-    local starter = require 'mini.starter'
-    starter.setup {
-      evaluate_single = true,
-      footer = os.date(),
-      header = table.concat({
-        [[  /\ \▔\___  ___/\   /(●)_ __ ___  ]],
-        [[ /  \/ / _ \/ _ \ \ / / | '_ ` _ \ ]],
-        [[/ /\  /  __/ (_) \ V /| | | | | | |]],
-        [[\_\ \/ \___|\___/ \_/ |_|_| |_| |_|]],
-        [[───────────────────────────────────]],
-      }, '\n'),
-      items = {
-        { name = 'Lazy', action = 'Lazy', section = 'Builtin actions' },
-        { name = 'Mason', action = 'Mason', section = 'Builtin actions' },
-        starter.sections.builtin_actions(),
-        starter.sections.recent_files(9, true),
-      },
-      content_hooks = {
-        -- starter.gen_hook.adding_bullet(' ', true),
-        starter.gen_hook.indexing('all', { 'Builtin actions' }),
-        starter.gen_hook.padding(3, 2),
-        starter.gen_hook.aligning('center', 'top'),
-      },
-    }
-    vim.cmd [[
-    augroup MiniStarterJK
-      au!
-      au User MiniStarterOpened nmap <buffer> j <Cmd>lua MiniStarter.update_current_item('next')<CR>
-      au User MiniStarterOpened nmap <buffer> k <Cmd>lua MiniStarter.update_current_item('prev')<CR>
-      au User MiniStarterOpened nmap <buffer> <C-p> <Cmd>Telescope find_files<CR>
-      au User MiniStarterOpened nmap <buffer> <C-n> <Cmd>Telescope file_browser<CR>
-    augroup END
-    ]]
+    -- local starter = require 'mini.starter'
+    -- starter.setup {
+    --   evaluate_single = true,
+    --   footer = os.date(),
+    --   header = table.concat({
+    --     [[  /\ \▔\___  ___/\   /(●)_ __ ___  ]],
+    --     [[ /  \/ / _ \/ _ \ \ / / | '_ ` _ \ ]],
+    --     [[/ /\  /  __/ (_) \ V /| | | | | | |]],
+    --     [[\_\ \/ \___|\___/ \_/ |_|_| |_| |_|]],
+    --     [[───────────────────────────────────]],
+    --   }, '\n'),
+    --   items = {
+    --     { name = 'Lazy', action = 'Lazy', section = 'Builtin actions' },
+    --     { name = 'Mason', action = 'Mason', section = 'Builtin actions' },
+    --     -- starter.sections.builtin_actions(),
+    --     starter.sections.recent_files(9, true),
+    --   },
+    --   content_hooks = {
+    --     -- starter.gen_hook.adding_bullet(' ', true),
+    --     starter.gen_hook.indexing('all', { 'Builtin actions' }),
+    --     starter.gen_hook.padding(3, 2),
+    --     starter.gen_hook.aligning('center', 'top'),
+    --   },
+    -- }
+    -- vim.cmd [[
+    -- augroup MiniStarterJK
+    --   au!
+    --   au User MiniStarterOpened nmap <buffer> j <Cmd>lua MiniStarter.update_current_item('next')<CR>
+    --   au User MiniStarterOpened nmap <buffer> k <Cmd>lua MiniStarter.update_current_item('prev')<CR>
+    --   au User MiniStarterOpened nmap <buffer> <C-p> <Cmd>Telescope find_files<CR>
+    --   au User MiniStarterOpened nmap <buffer> <C-n> <Cmd>Telescope file_browser<CR>
+    -- augroup END
+    -- ]]
 
     require('mini.tabline').setup {
       -- show_icons = false,
