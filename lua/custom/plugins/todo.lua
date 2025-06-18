@@ -2,9 +2,15 @@
 return {
   'folke/todo-comments.nvim',
   event = 'VimEnter',
-  dependencies = { 'nvim-lua/plenary.nvim' },
+  dependencies = { 'nvim-lua/plenary.nvim', 'folke/snacks.nvim' },
   keys = {
-    { '<leader>st', '<cmd>TodoTelescope<cr>' },
+    {
+      '<leader>st',
+      function()
+        Snacks.picker.todo_comments()
+      end,
+      desc = 'Todo Comments',
+    },
   },
   opts = {
     -- signs = false,
