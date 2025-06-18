@@ -7,7 +7,7 @@ return {
   -- },
   {
     'olimorris/codecompanion.nvim',
-    enabled = true,
+    enabled = false,
     init = function()
       -- require('custom.plugins.codecompanion.fidget-spinner'):init()
     end,
