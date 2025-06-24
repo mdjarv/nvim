@@ -89,7 +89,9 @@ return {
         { pane = 2, icon = ' ', title = 'Recent Files', section = 'recent_files', indent = 2, padding = 1, cwd = true, limit = 8 },
       },
     },
-    explorer = { enabled = true },
+    explorer = {
+      enabled = true,
+    },
     indent = {
       enabled = true,
       indent = {
@@ -126,7 +128,9 @@ return {
       },
     },
     input = { enabled = true },
-    picker = { enabled = true },
+    picker = {
+      enabled = true,
+    },
     notifier = { enabled = true, timeout = 5000 },
     quickfile = { enabled = true },
     scope = { enabled = true },
@@ -136,13 +140,6 @@ return {
     words = { enabled = true },
   },
   keys = {
-    {
-      '<leader>e',
-      function()
-        require('snacks').explorer()
-      end,
-      desc = 'File Explorer',
-    },
     -- Top Pickers & Explorer
     {
       '<leader><space>',
