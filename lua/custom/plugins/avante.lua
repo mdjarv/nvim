@@ -33,7 +33,96 @@ return {
       --     require('mcphub.extensions.avante').mcp_tool(),
       --   }
       -- end,
+      behaviour = {
+        auto_approve_tool_permissions = { 'run_go_tests', 'go_test_in_suite' },
+      },
       custom_tools = {
+        {
+          name = 'go_test_in_suite',
+          description = 'Run a single test within a Go suite and return summary and details',
+          param = {
+            type = 'table',
+            fields = {
+              {
+                name = 'path',
+                description = 'Path to the Go package to test (e.g. ./api)',
+                type = 'string',
+              },
+              {
+                name = 'suite_name',
+                description = 'Name of the suite entrypoint function (e.g. TestAPI)',
+                type = 'string',
+              },
+              {
+                name = 'test',
+                description = 'Specific test within the suite to run (e.g. TestCreateCollectionMemberStudentTravel)',
+                type = 'string',
+              },
+              {
+                name = 'flags',
+                description = 'Extra flags for go test (default -v)',
+                type = 'string',
+                optional = true,
+                default = '-v',
+              },
+            },
+          },
+          returns = {
+            {
+              name = 'summary',
+              description = 'Summary of the test run (PASS/FAIL, time, etc.)',
+              type = 'string',
+            },
+            {
+              name = 'details',
+              description = 'Full raw output of the test command',
+              type = 'string',
+            },
+            {
+              name = 'error',
+              description = 'Error message if the command failed',
+              type = 'string',
+              optional = true,
+            },
+          },
+          func = function(params, on_log, on_complete)
+            -- Construct the go test command to run a single test in a suite
+            local path = params.path or '.'
+            local suite_name = params.suite_name or ''
+            local test = params.test or ''
+            local flags = params.flags or '-v'
+
+            if suite_name == '' or test == '' then
+              return { summary = '', details = '', error = 'suite_name and test are required' }
+            end
+
+            local cmd = string.format("go test %s %s -run '^%s$' -testify.m %s", flags, path, suite_name, test)
+            local output = vim.fn.system(cmd)
+
+            -- Extract summary
+            local summary = ''
+            -- Look for overall PASS/FAIL, time, and possibly the test name
+            if output:find('^FAIL', 1, true) or output:find('\nFAIL', 1, true) then
+              local m = output:match 'FAIL%s+([%w%p_/]+)%s+(%d+%.?%d*)s'
+              if m then
+                summary = 'FAIL: ' .. m
+              else
+                summary = 'FAIL'
+              end
+            elseif output:find('^ok', 1, true) or output:find('\nok', 1, true) or output:find('PASS', 1, true) then
+              local m = output:match 'ok%s+([%w%p_/]+)%s+(%d+%.?%d*)s'
+              if m then
+                summary = 'PASS: ' .. m
+              else
+                summary = 'PASS'
+              end
+            else
+              summary = 'Test output could not be summarized.'
+            end
+
+            return { summary = summary, details = output, error = nil }
+          end,
+        },
         {
           name = 'run_go_tests', -- Unique name for the tool
           description = 'Run Go unit tests and return results', -- Description shown to AI
@@ -67,60 +156,73 @@ return {
             return vim.fn.system(string.format('go test -v %s', target))
           end,
         },
-        {
-          name = 'run_make_target',
-          description = 'Run a Makefile target in the current project',
-          command = 'make [target]',
-          param = {
-            type = 'table',
-            fields = {
-              {
-                name = 'target',
-                description = "Name of the Makefile target to run (e.g. 'build', 'test')",
-                type = 'string',
-                optional = false,
-              },
-              {
-                name = 'args',
-                description = 'Additional arguments to pass to make (optional)',
-                type = 'string',
-                optional = true,
-              },
-            },
-          },
-          returns = {
-            {
-              name = 'result',
-              description = 'Output of the make command',
-              type = 'string',
-            },
-            {
-              name = 'error',
-              description = 'Error message if the command failed',
-              type = 'string',
-              optional = true,
-            },
-          },
-          func = function(params, on_log, on_complete)
-            local target = params.target or ''
-            local args = params.args or ''
-            local cmd = string.format('make %s %s', target, args)
-            return vim.fn.system(cmd)
-          end,
-        },
+        -- {
+        --   name = 'go_test_suite',
+        --   description = 'Run a specific Go test suite',
+        --   param = {
+        --     type = 'table',
+        --     fields = {
+        --       {
+        --         name = 'flags',
+        --         description = 'Additional flags to pass to the `go test` command (optional)',
+        --         type = 'string',
+        --         optional = true,
+        --         default = '-v',
+        --       },
+        --       {
+        --         name = 'path',
+        --         description = 'Path to the Go package containing the test suite',
+        --         type = 'string',
+        --       },
+        --       {
+        --         name = 'suite_name',
+        --         description = 'Name of the test suite to run',
+        --         type = 'string',
+        --       },
+        --       {
+        --         name = 'test',
+        --         description = 'Specific test to run within the suite (optional)',
+        --         type = 'string',
+        --         optional = true,
+        --       },
+        --     },
+        --   },
+        --   returns = { -- Expected return values
+        --     {
+        --       name = 'result',
+        --       description = 'Result of the fetch',
+        --       type = 'string',
+        --     },
+        --     {
+        --       name = 'error',
+        --       description = 'Error message if the fetch was not successful',
+        --       type = 'string',
+        --       optional = true,
+        --     },
+        --   },
+        --   func = function(params, on_log, on_complete) -- Custom function to execute
+        --     local path = params.path or '.'
+        --     local flags = params.flags or '-v'
+        --     local test = params.test and (' -run ' .. params.test) or ''
+        --     local cmd = string.format('go test %s %s -run "^%s$" -testify.m %s', flags, path, params.suite_name, test)
+        --     local result = vim.fn.system(cmd)
+        --     return result
+        --   end,
+        -- },
       },
-      -- disabled_tools = {
-      --   'list_files',
-      --   'search_files',
-      --   'read_file',
-      --   'create_file',
-      --   'rename_file',
-      --   'delete_file',
-      --   'create_dir',
-      --   'rename_dir',
-      --   'delete_dir',
-      --   'bash',
-      -- },
+      disabled_tools = {
+        'git_commit',
+        --   'list_files',
+        --   'search_files',
+        --   'read_file',
+        --   'create_file',
+        --   'rename_file',
+        --   'delete_file',
+        --   'create_dir',
+        --   'rename_dir',
+        --   'delete_dir',
+        --   'bash',
+      },
       --   windows = {
       --     position = 'right',
       --     wrap = true,
@@ -161,8 +263,9 @@ return {
   end,
   build = 'make',
   dependencies = {
+    'folke/snacks.nvim',
     'ravitemer/mcphub.nvim',
-    'stevearc/dressing.nvim',
+    -- 'stevearc/dressing.nvim',
     'nvim-lua/plenary.nvim',
     'MunifTanjim/nui.nvim',
     'hrsh7th/nvim-cmp',

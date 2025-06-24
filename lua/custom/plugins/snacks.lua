@@ -90,10 +90,44 @@ return {
       },
     },
     explorer = { enabled = true },
-    indent = { enabled = true },
+    indent = {
+      enabled = true,
+      indent = {
+        only_scope = true,
+        only_current = true,
+      },
+      animate = {
+        enabled = false,
+      },
+      scope = {
+        enabled = true,
+        hl = {
+          'SnacksIndent1',
+          'SnacksIndent2',
+          'SnacksIndent3',
+          'SnacksIndent4',
+          'SnacksIndent5',
+          'SnacksIndent6',
+          'SnacksIndent7',
+          'SnacksIndent8',
+        },
+      },
+      chunk = {
+        enabled = true,
+        char = {
+          -- corner_top = '┌',
+          -- corner_bottom = '└',
+          corner_top = '╭',
+          corner_bottom = '╰',
+          horizontal = '─',
+          vertical = '│',
+          arrow = '',
+        },
+      },
+    },
     input = { enabled = true },
     picker = { enabled = true },
-    notifier = { enabled = true, timeout = 3000 },
+    notifier = { enabled = true, timeout = 5000 },
     quickfile = { enabled = true },
     scope = { enabled = true },
     scroll = { enabled = false },
@@ -170,7 +204,7 @@ return {
     {
       '<leader>fc',
       function()
-        Snacks.picker.files { cwd = vim.fn.stdpath 'config' }
+        Snacks.picker.smart { cwd = vim.fn.stdpath 'config' }
       end,
       desc = 'Find Config File',
     },
@@ -401,6 +435,17 @@ return {
         Snacks.picker.lazy()
       end,
       desc = 'Search for Plugin Spec',
+    },
+    {
+      '<leader>sn',
+      function()
+        Snacks.picker.grep {
+          cwd = vim.fn.stdpath 'config',
+          ft = 'lua',
+          need_search = false,
+        }
+      end,
+      desc = 'Grep config files',
     },
     {
       '<leader>sq',
