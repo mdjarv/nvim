@@ -3,7 +3,7 @@
 
 return {
   'nvim-neo-tree/neo-tree.nvim',
-  enabled = false,
+  enabled = true,
   branch = 'v3.x',
   dependencies = {
     'nvim-lua/plenary.nvim',

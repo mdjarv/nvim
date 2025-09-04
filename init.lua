@@ -86,6 +86,32 @@ vim.wo.conceallevel = 0
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'DiagnosticSignError' })
+vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn' })
+vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint' })
+vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo' })
+
+vim.diagnostic.config {
+  underline = true,
+  virtual_text = { spacing = 4, prefix = '●' },
+  signs = true,
+  update_in_insert = true,
+  float = {
+    border = 'rounded',
+    source = true,
+    format = function(diagnostic)
+      local msg = diagnostic.message
+      if diagnostic.source then
+        msg = msg .. '\nSource: ' .. diagnostic.source
+      end
+      if diagnostic.code then
+        msg = msg .. '\nCode: ' .. tostring(diagnostic.code)
+      end
+      return msg
+    end,
+  },
+}
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
@@ -203,20 +229,20 @@ require('lazy').setup({
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
-      signs = {
-        add = { text = '' },
-        change = { text = '' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '' },
-      },
-      signs_staged = {
-        add = { text = '' },
-        change = { text = '' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '' },
-      },
+      -- signs = {
+      --   add = { text = '' },
+      --   change = { text = '' },
+      --   delete = { text = '_' },
+      --   topdelete = { text = '‾' },
+      --   changedelete = { text = '' },
+      -- },
+      -- signs_staged = {
+      --   add = { text = '' },
+      --   change = { text = '' },
+      --   delete = { text = '_' },
+      --   topdelete = { text = '‾' },
+      --   changedelete = { text = '' },
+      -- },
     },
   },
 
@@ -266,6 +292,7 @@ require('lazy').setup({
         { '<leader>w', group = '[W]orkspace' },
         { '<leader>w_', hidden = true },
         { '<leader>h', desc = 'Git [H]unk', mode = 'v' },
+        { '<leader>lr', ':LspRestart<cr>', desc = 'Restart LSP', mode = 'n' },
       }
       -- visual mode
       -- require('which-key').register({
@@ -503,7 +530,7 @@ require('lazy').setup({
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
-          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+          -- map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
           -- Opens a popup that displays documentation about the word under your cursor
           --  See `:help K` for why this keymap.

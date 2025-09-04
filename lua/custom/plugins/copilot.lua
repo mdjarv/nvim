@@ -12,6 +12,7 @@ return {
         suggestion = { enabled = false },
         panel = { enabled = false },
         filetypes = { ['*'] = true },
+        copilot_model = 'gpt-5-mini',
       }
     end,
   },
