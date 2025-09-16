@@ -98,11 +98,11 @@ vim.diagnostic.config {
   update_in_insert = true,
   float = {
     border = 'rounded',
-    source = true,
+    -- source = true,
     format = function(diagnostic)
       local msg = diagnostic.message
       if diagnostic.source then
-        msg = msg .. '\nSource: ' .. diagnostic.source
+        msg = msg .. '\n\nSource: ' .. diagnostic.source
       end
       if diagnostic.code then
         msg = msg .. '\nCode: ' .. tostring(diagnostic.code)
@@ -229,6 +229,15 @@ require('lazy').setup({
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
+      current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+      current_line_blame_opts = {
+        virt_text = true,
+        virt_text_pos = 'right_align', -- 'eol' | 'overlay' | 'right_align'
+        delay = 500,
+        ignore_whitespace = true,
+        virt_text_priority = 100,
+        use_focus = true,
+      },
       -- signs = {
       --   add = { text = '' },
       --   change = { text = '' },

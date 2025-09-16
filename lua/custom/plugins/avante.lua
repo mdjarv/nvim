@@ -1,7 +1,7 @@
 ---@diagnostic disable: missing-fields
 return {
   'yetone/avante.nvim',
-  enabled = true,
+  enabled = false,
   build = 'make',
   event = 'VeryLazy',
   version = false,
