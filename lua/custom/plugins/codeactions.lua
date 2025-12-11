@@ -40,6 +40,14 @@ return {
       desc = 'Tiny Code Action',
     },
     {
+      '<M-CR>',
+      function()
+        require('tiny-code-action').code_action {}
+      end,
+      mode = { 'n', 'v' },
+      desc = 'Code Action',
+    },
+    {
       '<leader>cA',
       function()
         require('tiny-code-action').code_action_all()

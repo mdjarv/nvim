@@ -336,13 +336,6 @@ return {
       desc = 'Autocmds',
     },
     {
-      '<leader>sb',
-      function()
-        Snacks.picker.lines()
-      end,
-      desc = 'Buffer Lines',
-    },
-    {
       '<leader>sc',
       function()
         Snacks.picker.command_history()

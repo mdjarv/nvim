@@ -7,15 +7,15 @@ return {
     'nvim-lua/plenary.nvim',
     'nvim-telescope/telescope.nvim',
   },
-  keys = {
-    { '<leader>od', '<cmd>ObsidianDailies<cr>', desc = 'Obsidian Dailies' },
-    { '<leader>so', '<cmd>ObsidianQuickSwitch<cr>', desc = 'Obsidian Quick Switch' },
-    { '<leader>on', '<cmd>ObsidianNew<cr>', desc = 'Obsidian New Note' },
-    { '<leader>ol', '<cmd>ObsidianFollowLink<cr>', desc = 'Obsidian Follow Link' },
-    { '<leader>oc', '<cmd>ObsidianPasteImg<cr>', desc = 'Obsidian Paste Image' },
-    { '<leader>os', '<cmd>ObsidianSearch<cr>', desc = 'Obsidian Live Grep' },
-    { '<leader>ot', '<cmd>ObsidianTags<cr>', desc = 'Obsidian Tags' },
-  },
+  -- keys = {
+  --   { '<leader>od', '<cmd>ObsidianDailies<cr>', desc = 'Obsidian Dailies' },
+  --   { '<leader>so', '<cmd>ObsidianQuickSwitch<cr>', desc = 'Obsidian Quick Switch' },
+  --   { '<leader>on', '<cmd>ObsidianNew<cr>', desc = 'Obsidian New Note' },
+  --   { '<leader>ol', '<cmd>ObsidianFollowLink<cr>', desc = 'Obsidian Follow Link' },
+  --   { '<leader>oc', '<cmd>ObsidianPasteImg<cr>', desc = 'Obsidian Paste Image' },
+  --   { '<leader>os', '<cmd>ObsidianSearch<cr>', desc = 'Obsidian Live Grep' },
+  --   { '<leader>ot', '<cmd>ObsidianTags<cr>', desc = 'Obsidian Tags' },
+  -- },
   opts = {
     -- A list of workspace names, paths, and configuration overrides.
     -- If you use the Obsidian app, the 'path' of a workspace should generally be

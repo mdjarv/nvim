@@ -583,6 +583,7 @@ require('lazy').setup({
           --
           -- This may be unwanted, since they displace some of your code
           if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+            vim.lsp.inlay_hint.enable(true)
             map('<leader>Th', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
             end, '[T]oggle Inlay [H]ints')
@@ -618,9 +619,9 @@ require('lazy').setup({
 
         delve = {},
 
-        ts_ls = {},
-        eslint_d = {},
         -- biome = {},
+
+        tailwindcss = {},
 
         -- markdownlint = {},
 
@@ -705,6 +706,8 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'eslint_d', -- Fast eslint daemon
+        'prettierd', -- Fast prettier daemon
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -924,6 +927,7 @@ require('lazy').setup({
         },
         ---@diagnostic disable-next-line: missing-fields
         formatting = {
+          fields = { 'abbr', 'kind', 'menu' },
           format = lspkind.cmp_format {
             mode = 'symbol',
             maxwidth = 50,
@@ -956,6 +960,14 @@ require('lazy').setup({
               Copilot = '',
               Supermaven = '',
               TypeParameter = '',
+            },
+            menu = {
+              copilot = '',
+              supermaven = '',
+              nvim_lsp = '',
+              luasnip = '',
+              path = '',
+              lazydev = '',
             },
           },
         },
@@ -1039,7 +1051,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'vim', 'vimdoc', 'gitcommit', 'git_rebase', 'go' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'vim', 'vimdoc', 'gitcommit', 'git_rebase', 'go', 'javascript', 'typescript', 'tsx', 'css', 'json' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
