@@ -86,15 +86,18 @@ vim.wo.conceallevel = 0
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
-vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'DiagnosticSignError' })
-vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn' })
-vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint' })
-vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo' })
 
 vim.diagnostic.config {
   underline = true,
   virtual_text = { spacing = 4, prefix = '●' },
-  signs = true,
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '',
+      [vim.diagnostic.severity.WARN] = '',
+      [vim.diagnostic.severity.HINT] = '',
+      [vim.diagnostic.severity.INFO] = '',
+    },
+  },
   update_in_insert = true,
   float = {
     border = 'rounded',
@@ -974,8 +977,6 @@ require('lazy').setup({
         sorting = {
           priority_weight = 2,
           comparators = {
-            require('copilot_cmp.comparators').prioritize,
-
             -- Below is the default comparitor list and order for nvim-cmp
             cmp.config.compare.offset,
             -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
@@ -1049,7 +1050,9 @@ require('lazy').setup({
 
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    branch = 'master', -- Use master branch which has nvim-treesitter.configs
     build = ':TSUpdate',
+    main = 'nvim-treesitter.configs', -- Tell lazy.nvim which module to use for setup
     opts = {
       ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'vim', 'vimdoc', 'gitcommit', 'git_rebase', 'go', 'javascript', 'typescript', 'tsx', 'css', 'json' },
       -- Autoinstall languages that are not installed
@@ -1109,6 +1112,8 @@ require('lazy').setup({
       --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
       --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+
+
     end,
   },
 

@@ -4,6 +4,31 @@ require('which-key').add {
 }
 
 return {
+  {
+    'akinsho/git-conflict.nvim',
+    version = '*',
+    event = 'BufReadPre',
+    opts = {
+      default_mappings = {
+        ours = 'co',
+        theirs = 'ct',
+        none = 'c0',
+        both = 'cb',
+        next = ']x',
+        prev = '[x',
+      },
+      disable_diagnostics = true, -- Disable diagnostics in conflict buffers
+      list_opener = 'copen', -- Command to open quickfix list
+      highlights = {
+        incoming = 'DiffAdd',
+        current = 'DiffText',
+      },
+    },
+    keys = {
+      { '<leader>gx', '<cmd>GitConflictListQf<cr>', desc = 'List conflicts (quickfix)' },
+      { '<leader>gr', '<cmd>GitConflictRefresh<cr>', desc = 'Refresh conflicts' },
+    },
+  },
   -- {
   --   'tpope/vim-fugitive',
   --   keys = {

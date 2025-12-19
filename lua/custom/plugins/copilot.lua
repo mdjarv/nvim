@@ -30,6 +30,7 @@ local copilot_blacklist = {
 return {
   {
     'zbirenbaum/copilot.lua',
+    enabled = false,
     dependencies = {
       'nvim-lualine/lualine.nvim',
     },
@@ -86,6 +87,7 @@ return {
   },
   {
     'zbirenbaum/copilot-cmp',
+    enabled = false,
     dependencies = { 'zbirenbaum/copilot.lua' },
     config = function()
       require('copilot_cmp').setup()

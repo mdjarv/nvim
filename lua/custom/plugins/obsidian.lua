@@ -1,4 +1,5 @@
 return {
+  enabled = false,
   'epwalsh/obsidian.nvim',
   version = '*',
   lazy = true,

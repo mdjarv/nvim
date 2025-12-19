@@ -32,6 +32,22 @@ return {
           { 'macro-recording', fmt = show_macro_recording, fg = '#ff0000' },
         },
         lualine_x = {
+          {
+            function()
+              local model = _G.llm_current_model or ''
+              -- Extract name and variant (e.g., "qwen2.5-coder:7b-base" -> "qwen2.5-coder 7b")
+              local name = model:match('([^:]+)') or model
+              local variant = model:match(':([^-]+)') or ''
+              if variant ~= '' then
+                return name .. ' ' .. variant
+              end
+              return name
+            end,
+            icon = '',
+            cond = function()
+              return _G.llm_current_model ~= nil
+            end,
+          },
           -- {
           --   'copilot',
           --   symbols = {
