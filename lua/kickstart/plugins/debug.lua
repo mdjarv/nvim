@@ -13,6 +13,7 @@ return {
   dependencies = {
     -- Creates a beautiful debugger UI
     'rcarriga/nvim-dap-ui',
+    'nvim-telescope/telescope.nvim',
     'nvim-telescope/telescope-dap.nvim',
 
     -- Required dependency for nvim-dap-ui
@@ -148,6 +149,22 @@ return {
           run_last = '▶▶',
           terminate = '⏹',
           disconnect = '⏏',
+        },
+      },
+      layouts = {
+        {
+          elements = {
+            { id = 'scopes', size = 0.5 },
+            { id = 'breakpoints', size = 0.25 },
+            { id = 'stacks', size = 0.25 },
+          },
+          size = 40,
+          position = 'left',
+        },
+        {
+          elements = { 'console' },
+          size = 0.25,
+          position = 'bottom',
         },
       },
     }

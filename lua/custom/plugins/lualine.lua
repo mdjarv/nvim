@@ -34,6 +34,15 @@ return {
         lualine_x = {
           {
             function()
+              return require('dap').status()
+            end,
+            icon = '',
+            cond = function()
+              return package.loaded['dap'] and require('dap').status() ~= ''
+            end,
+          },
+          {
+            function()
               local model = _G.llm_current_model or ''
               -- Extract name and variant (e.g., "qwen2.5-coder:7b-base" -> "qwen2.5-coder 7b")
               local name = model:match('([^:]+)') or model

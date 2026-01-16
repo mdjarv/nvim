@@ -2,6 +2,7 @@ return {
   { -- Linting
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
+    dependencies = { 'mason-org/mason.nvim' },
     config = function()
       local lint = require 'lint'
       lint.linters_by_ft = {
@@ -15,6 +16,7 @@ return {
       }
 
       lint.linters.sqlfluff.args = { '--config', '.sqlfluff' }
+      lint.linters.revive.args = { '-config', vim.fn.expand '~/.config/revive.toml', '-formatter', 'json' }
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
       -- instead set linters_by_ft like this:
