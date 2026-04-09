@@ -25,7 +25,7 @@ return {
       trigger = { prefetch_on_insert = false },
     },
     sources = {
-      default = { 'lsp', 'path', 'snippets', 'minuet' },
+      default = { 'lsp', 'path', 'snippets', 'minuet', '99' },
       providers = {
         minuet = {
           name = 'minuet',
@@ -33,6 +33,10 @@ return {
           async = true,
           timeout_ms = 5000,
           score_offset = 50,
+        },
+        ['99'] = {
+          name = '99',
+          module = 'blink.compat.source',
         },
       },
     },

@@ -1,10 +1,10 @@
 return {
   {
     'olimorris/codecompanion.nvim',
+    enabled = false,
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
-      'ravitemer/mcphub.nvim',
     },
     keys = {
       { '<leader>ak', '<cmd>CodeCompanionActions<cr>', mode = { 'n', 'v' }, desc = 'CodeCompanion Actions' },

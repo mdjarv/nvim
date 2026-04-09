@@ -13,8 +13,6 @@ return {
   dependencies = {
     -- Creates a beautiful debugger UI
     'rcarriga/nvim-dap-ui',
-    'nvim-telescope/telescope.nvim',
-    'nvim-telescope/telescope-dap.nvim',
 
     -- Required dependency for nvim-dap-ui
     'nvim-neotest/nvim-nio',
@@ -93,21 +91,6 @@ return {
       end,
       desc = 'Evaluate expression',
       mode = { 'n', 'v' },
-    },
-    {
-      '<leader>df',
-      '<cmd>Telescope dap frames<cr>',
-      desc = 'Frames',
-    },
-    {
-      '<leader>dc',
-      '<cmd>Telescope dap commands<cr>',
-      desc = 'Commands',
-    },
-    {
-      '<leader>dv',
-      '<cmd>Telescope dap variables<cr>',
-      desc = 'Variables',
     },
   },
   config = function()
@@ -193,8 +176,5 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
-
-    -- Load the telescope extension
-    require('telescope').load_extension 'dap'
   end,
 }

@@ -4,7 +4,6 @@ return {
   keys = {
     { '<leader>gv', '<cmd>DiffviewOpen<cr>', desc = 'Diffview Open' },
     { '<leader>gV', '<cmd>DiffviewClose<cr>', desc = 'Diffview Close' },
-    { '<leader>gh', '<cmd>DiffviewFileHistory %<cr>', desc = 'File History (current)' },
     { '<leader>gH', '<cmd>DiffviewFileHistory<cr>', desc = 'File History (repo)' },
   },
   opts = {

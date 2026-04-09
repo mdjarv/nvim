@@ -51,6 +51,6 @@ return {
 | UI | snacks.nvim (dashboard, picker, git, notifications), lualine |
 | Completion | blink.cmp + minuet (ollama FIM) |
 | LSP | nvim-lspconfig, mason, conform |
-| AI Chat | codecompanion (ollama), claude-code |
+| AI Chat | codecompanion (ollama) |
 | Testing | neotest with neotest-go |
-| Git | gitsigns, snacks.git |
+| Git | gitsigns, snacks.git, diffview |

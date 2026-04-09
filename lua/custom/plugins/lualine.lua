@@ -18,7 +18,7 @@ return {
         -- theme = 'catppuccin',
         component_separators = { left = '', right = '|' },
         section_separators = { left = '', right = '' },
-        disabled_filetypes = { 'Avante', 'AvanteInput', 'AvanteSelectedFiles' },
+        disabled_filetypes = { statusline = { "got-tree" } },
       },
       sections = {
         lualine_a = { 'mode' },
@@ -32,6 +32,7 @@ return {
           { 'macro-recording', fmt = show_macro_recording, fg = '#ff0000' },
         },
         lualine_x = {
+          require 'got.lualine',
           {
             function()
               return require('dap').status()
@@ -45,8 +46,8 @@ return {
             function()
               local model = _G.llm_current_model or ''
               -- Extract name and variant (e.g., "qwen2.5-coder:7b-base" -> "qwen2.5-coder 7b")
-              local name = model:match('([^:]+)') or model
-              local variant = model:match(':([^-]+)') or ''
+              local name = model:match '([^:]+)' or model
+              local variant = model:match ':([^-]+)' or ''
               if variant ~= '' then
                 return name .. ' ' .. variant
               end
@@ -57,32 +58,6 @@ return {
               return _G.llm_current_model ~= nil
             end,
           },
-          -- {
-          --   'copilot',
-          --   symbols = {
-          --     status = {
-          --       icons = {
-          --         enabled = ' ',
-          --         sleep = ' ', -- auto-trigger disabled
-          --         disabled = ' ',
-          --         warning = ' ',
-          --         unknown = ' ',
-          --       },
-          --       hl = {
-          --         enabled = require('copilot-lualine.colors').get_hl_value(0, 'DiagnosticWarn', 'fg'), -- hl value
-          --         -- enabled = '#50FA7B',
-          --         sleep = '#AEB7D0',
-          --         disabled = '#6272A4',
-          --         warning = '#FFB86C',
-          --         unknown = '#FF5555',
-          --       },
-          --     },
-          --     spinners = require('copilot-lualine.spinners').dots,
-          --     spinner_color = '#6272A4',
-          --   },
-          --   show_colors = true,
-          --   show_loading = true,
-          -- },
           'filetype',
         },
         lualine_y = { 'progress' },
