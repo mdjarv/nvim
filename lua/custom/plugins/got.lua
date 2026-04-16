@@ -1,6 +1,6 @@
 return {
+  'mdjarv/got.nvim',
   name = 'got.nvim',
-  dir = '~/git/got.nvim',
   ft = { 'go', 'javascript', 'typescript', 'lua' },
   keys = {
     { '<leader>ta', '<cmd>GotRun<cr>', desc = 'Run tests' },

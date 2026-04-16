@@ -323,6 +323,7 @@ require('lazy').setup({
         'gomodifytags',
         'impl',
         'delve',
+        'revive',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
