@@ -245,7 +245,6 @@ require('lazy').setup({
       local capabilities = require('blink.cmp').get_lsp_capabilities()
 
       local servers = {
-        gopls = {},
         rust_analyzer = {},
         tailwindcss = {},
         ts_ls = {},
@@ -327,15 +326,18 @@ require('lazy').setup({
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-      require('mason-lspconfig').setup {
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
-      }
+      -- nvim 0.11+ LSP API: shared capabilities + per-server config, then enable.
+      -- mason-lspconfig v2 auto-enables installed servers; gopls is enabled manually below.
+      vim.lsp.config('*', { capabilities = capabilities })
+      for server_name, server in pairs(servers) do
+        vim.lsp.config(server_name, server)
+      end
+
+      require('mason-lspconfig').setup()
+
+      -- gopls managed outside mason: registry pins v0.23.0, whose submodule tag is broken
+      -- (`go install ...gopls@v0.23.0` fails). Install manually: go install golang.org/x/tools/gopls@latest
+      vim.lsp.enable 'gopls'
     end,
   },
 
