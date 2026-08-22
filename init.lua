@@ -540,4 +540,7 @@ require('lazy').setup({
   },
 })
 
+-- Lightweight plain-markdown note taking (see lua/custom/notes.lua).
+require('custom.notes').setup()
+
 -- vim: ts=2 sts=2 sw=2 et
