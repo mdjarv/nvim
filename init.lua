@@ -40,7 +40,11 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.diagnostic.config {
   severity_sort = true,
   underline = true,
-  virtual_text = { spacing = 4, prefix = '●' },
+  virtual_text = {
+    virt_text_pos = 'right_align',
+    spacing = 4,
+    prefix = '●',
+  },
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = '',
