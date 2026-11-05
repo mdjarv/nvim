@@ -342,6 +342,21 @@ require('lazy').setup({
       -- gopls managed outside mason: registry pins v0.23.0, whose submodule tag is broken
       -- (`go install ...gopls@v0.23.0` fails). Install manually: go install golang.org/x/tools/gopls@latest
       vim.lsp.enable 'gopls'
+
+      -- nixd not in mason registry; installed with `nix profile install nixpkgs#nixd`.
+      -- <nixpkgs> is the host channel, kept on the same release as the NixOS VM.
+      vim.lsp.config('nixd', {
+        settings = {
+          nixd = {
+            nixpkgs = { expr = 'import <nixpkgs> { }' },
+            formatting = { command = { 'nixfmt' } },
+            options = {
+              nixos = { expr = '(import <nixpkgs/nixos> { configuration = { }; }).options' },
+            },
+          },
+        },
+      })
+      vim.lsp.enable 'nixd'
     end,
   },
 
@@ -379,6 +394,7 @@ require('lazy').setup({
         typescript = { 'prettierd', 'prettier', stop_after_first = true },
         typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
         sql = { 'sqlfluff' },
+        nix = { 'nixfmt' },
         markdown = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
